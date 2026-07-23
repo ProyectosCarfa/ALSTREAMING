@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>ALSTREAMING | Productos</title>
+    <meta
+      name="description"
+      content="Catálogo de productos digitales ALSTREAMING"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/Alex/frontend/src/css/products.css" />
+  </head>
+  <body>
+    <img
+      src="/Alex/frontend/assets/fondo/fondoInicio.png"
+      alt=""
+      class="fondoInicio"
+    />
+    <header class="module-header">
+      <a href="/index.html"
+        ><img
+          src="/Alex/frontend/assets/logo/logoAlex.png"
+          alt="ALSTREAMING"
+          class="logo" /><img
+          src="/Alex/frontend/assets/logo/logoEscrito.png"
+          alt="ALSTREAMING"
+          class="logoEscrito"
+      /></a>
+      <div class="animation-corazon">
+        <svg viewBox="0 0 800 300" class="grafico_svg">
+          <path
+            class="linea_viva"
+            d="M0,150 L230,150 L245,120 L260,180 L275,150 L330,150 L365,240 C250,180 300,80 365,130 C430,80 480,180 365,240 L400,150 L455,150 L470,120 L485,180 L500,150 L800,150"
+          ></path>
+        </svg>
+      </div>
+      <nav>
+        <a href="/index.html"><i class="fa-solid fa-house"></i> Inicio</a>
+        <a href="/Alex/frontend/pages/productos.html"><i class="fa-solid fa-box-open"></i> Productos</a>
+        <a href="/Alex/frontend/pages/perfil.html"><i class="fa-solid fa-user"></i> Mi perfil</a>
+        <!-- Contenedor dinámico de sesión -->
+        <div id="auth-container" class="auth-container">
+          <a href="/Alex/frontend/pages/login.html">
+            <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión
+          </a>
+        </div>
+      </nav>
+      <button id="btnmenu" type="button" class="menuToggle" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+    <main class="banners">
+      <div class="modulo-banner"><span id="banner" class="banners"></span></div>
+      
+      <!-- ======= TENDENCIAS 24H ======= -->
+      <article class="tendencias">
+        <header class="tendencias-header">
+          <div>
+            <h2>Tendencias 24h</h2>
+            <p>Lo más pedido durante las últimas 24 horas</p>
+          </div>
+          <span>Exclusivo para ti</span>
+        </header>
+        <div class="productostendencias" id="tendenciasProductos"></div>
+      </article>
+      
+      <!-- ======= TE PODRÍA INTERESAR ======= -->
+      <aside class="aside-interes">
+        <h2>Te podría interesar</h2>
+        <p>Recomendado según tu actividad y lo que más rota</p>
+        <ul class="productosInteresar" id="productosInteresar"></ul>
+      </aside>
+      
+      <!-- ======= BUSCADOR ======= -->
+      <section class="search-producto">
+        <div class="icono-logo-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <h2>Busca tu producto</h2>
+        <p id="module-saldo" class="module-saldo">
+          Inicia sesión para ver tu saldo
+        </p>
+        <p id="saldo-mesage" class="dataprice"></p>
+        <div class="module-search">
+          <input
+            placeholder="Busca un producto..."
+            id="searchProducto"
+            aria-label="Buscar productos"
+            type="search"
+          />
+          <span id="search-Icon">Buscar</span>
+        </div>
+      </section>
+      
+      <!-- ======= CARRUSEL DE CATEGORÍAS (SOLO IMÁGENES EN CÍRCULO) ======= -->
+      <section class="categorias-carousel-section">
+        <h2 class="categorias-title">Categorías</h2>
+        <div class="categorias-carousel-container">
+          <button class="carousel-btn prev" id="carouselPrev" aria-label="Anterior">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div class="categorias-carousel" id="categoriasCarousel">
+            <!-- JS carga aquí los círculos de categorías -->
+          </div>
+          <button class="carousel-btn next" id="carouselNext" aria-label="Siguiente">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </section>
+      
+      <!-- ======= PRODUCTOS ======= -->
+      <section class="productos-container">
+        <div id="productos" class="cards-productos" aria-live="polite"></div>
+        <div id="pagination-controls"></div>
+      </section>
+    </main>
+    
+    <!-- ======= MODAL TÉRMINOS ======= -->
+    <div class="modal-overlay" id="modal-terminos">
+      <div class="modal-info">
+        <div class="header-info-modal">
+          <h3>Términos y condiciones</h3>
+          <button data-close="modal-terminos">&times;</button>
+        </div>
+        <div class="content-modal" id="contenido-terminos"></div>
+        <button class="btn-listo" data-close="modal-terminos">Listo</button>
+      </div>
+    </div>
+    
+    <!-- ======= MODAL CONDICIONES ======= -->
+    <div class="modal-overlay" id="modal-condiciones">
+      <div class="modal-info">
+        <div class="header-info-modal">
+          <h3>Condiciones del servicio</h3>
+          <button data-close="modal-condiciones">&times;</button>
+        </div>
+        <div class="content-modal" id="contenido-condiciones"></div>
+        <button class="btn-listo" data-close="modal-condiciones">Listo</button>
+      </div>
+    </div>
+    
+    <!-- ======= MODAL DETALLES ======= -->
+    <div class="modal-overlay" id="modal-detalles">
+      <div class="modal-info">
+        <div class="header-info-modal">
+          <h3 id="titulo-detalles">Detalles de producto</h3>
+          <button data-close="modal-detalles">&times;</button>
+        </div>
+        <div class="content-modal" id="contenido-detalles"></div>
+        <button class="btn-listo" data-close="modal-detalles">Cerrar</button>
+      </div>
+    </div>
+    
+    <script type="module" src="/Alex/frontend/assets/banners/products.js"></script>
+    <script type="module" src="/Alex/frontend/src/js/products.js"></script>
+    <script src="/Alex/frontend/src/js/auth-check.js"></script>
+  </body>
+</html>

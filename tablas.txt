@@ -1,0 +1,287 @@
+--1. Tabla categories
+
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    image VARCHAR(255),
+    name VARCHAR(100) NOT NULL,
+    description TEXT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+--Tabla products
+
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    seller_id INT NOT NULL,
+    category_id INT NOT NULL,
+
+    image VARCHAR(255) NOT NULL,
+
+    name VARCHAR(200) NOT NULL,
+
+    short_description TEXT,
+
+    details TEXT,
+
+    terms TEXT,
+
+    stock INT DEFAULT 0,
+
+    renewable ENUM('renewable','non_renewable') DEFAULT 'renewable',
+
+    normal_price DECIMAL(10,2) NOT NULL,
+
+    renewal_price DECIMAL(10,2) DEFAULT NULL,
+
+    stock_status ENUM(
+        'in_stock',
+        'on_request',
+        'activation'
+    ) DEFAULT 'in_stock',
+
+    views INT DEFAULT 0,
+
+    sales INT DEFAULT 0,
+
+    active BOOLEAN DEFAULT TRUE,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (seller_id)
+        REFERENCES users(id),
+
+    FOREIGN KEY (category_id)
+        REFERENCES categories(id)
+);
+
+
+
+--Tabla product_reviews
+CREATE TABLE product_reviews (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    product_id INT NOT NULL,
+
+    user_id INT NOT NULL,
+
+    rating INT NOT NULL,
+
+    opinion TEXT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (product_id)
+        REFERENCES products(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id),
+
+    CHECK (rating >= 1 AND rating <= 5)
+
+);
+
+
+--Tabla sales
+CREATE TABLE sales (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    ticket VARCHAR(30) UNIQUE NOT NULL,
+
+    product_id INT NOT NULL,
+
+    customer_id INT NOT NULL,
+
+    email VARCHAR(255),
+
+    password VARCHAR(255),
+
+    profile VARCHAR(100),
+
+    pin VARCHAR(50),
+
+    customer_name VARCHAR(200),
+
+    customer_whatsapp VARCHAR(20),
+
+    start_date DATE,
+
+    end_date DATE,
+
+    status ENUM(
+        'available',
+        'support',
+        'renewal',
+        'expired'
+    ) DEFAULT 'available',
+
+    notes TEXT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (product_id)
+        REFERENCES products(id),
+
+    FOREIGN KEY (customer_id)
+        REFERENCES users(id)
+
+);
+
+-- users actualizada
+ALTER TABLE users
+ADD COLUMN avatar VARCHAR(255) NULL,
+ADD COLUMN full_name VARCHAR(150) NULL,
+ADD COLUMN address TEXT NULL,
+ADD COLUMN last_login DATETIME NULL,
+ADD COLUMN email_verified BOOLEAN DEFAULT FALSE,
+ADD COLUMN phone_verified BOOLEAN DEFAULT FALSE,
+ADD COLUMN notes TEXT NULL;
+
+
+
+-- 1. Tabla orders (Historial de compras)
+CREATE TABLE orders (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    order_number VARCHAR(30) UNIQUE NOT NULL,
+
+    user_id INT NOT NULL,
+
+    total DECIMAL(10,2) NOT NULL,
+
+    payment_method VARCHAR(50),
+
+    payment_status ENUM(
+        'pending',
+        'paid',
+        'cancelled',
+        'refunded'
+    ) DEFAULT 'pending',
+
+    order_status ENUM(
+        'pending',
+        'processing',
+        'completed',
+        'cancelled'
+    ) DEFAULT 'pending',
+
+    notes TEXT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+
+);
+
+--2. Tabla support_tickets
+CREATE TABLE support_tickets (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    ticket_number VARCHAR(30) UNIQUE NOT NULL,
+
+    sale_id INT NOT NULL,
+
+    user_id INT NOT NULL,
+
+    subject VARCHAR(255),
+
+    message TEXT NOT NULL,
+
+    status ENUM(
+        'open',
+        'in_progress',
+        'closed'
+    ) DEFAULT 'open',
+
+    priority ENUM(
+        'low',
+        'medium',
+        'high'
+    ) DEFAULT 'medium',
+
+    admin_response TEXT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (sale_id)
+        REFERENCES sales(id),
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+
+);
+
+--3. Tabla notifications
+CREATE TABLE notifications (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id INT NOT NULL,
+
+    title VARCHAR(150) NOT NULL,
+
+    message TEXT NOT NULL,
+
+    type ENUM(
+        'renewal',
+        'expiration',
+        'support',
+        'purchase',
+        'general'
+    ) DEFAULT 'general',
+
+    is_read BOOLEAN DEFAULT FALSE,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+
+);
+
+--4. Tabla activity_logs
+CREATE TABLE activity_logs (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id INT NOT NULL,
+
+    action VARCHAR(255) NOT NULL,
+
+    table_name VARCHAR(100),
+
+    record_id INT,
+
+    description TEXT,
+
+    ip_address VARCHAR(45),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+
+);
+

@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>ALSTREAMING | Iniciar sesión · alarako 2026</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+    default-src 'self';
+    img-src 'self' data:;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+    font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+    script-src 'self';
+    connect-src 'self' https://tkpgbheyzlbhiaipxtzp.supabase.co;
+    object-src 'none';
+    frame-ancestors 'none';
+    base-uri 'self';
+    form-action 'self';
+    upgrade-insecure-requests;"
+    />
+
+    <link rel="stylesheet" href="/Alex/frontend/src/css/login.css" />
+    <link rel="stylesheet" href="/Alex/frontend/src/css/style.css" />
+
+    <style>
+      /* LLUVIA DE PALABRAS ALARAKAS - COLORES MAS CLAROS Y VISIBLES */
+      .word-rain {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        opacity: 0.20;
+        font-weight: 800;
+        font-size: 1.6rem;
+        letter-spacing: 4px;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        justify-content: space-around;
+        gap: 30px 50px;
+        padding: 40px 30px;
+        font-family: 'Inter', sans-serif;
+        text-transform: uppercase;
+        line-height: 2.6;
+      }
+      .word-rain span {
+        display: inline-block;
+        animation: floatWord 22s infinite alternate ease-in-out;
+        transform-origin: center;
+        filter: blur(0.3px);
+        background: rgba(0,0,0,0.02);
+        padding: 0 10px;
+        border-radius: 12px;
+        backdrop-filter: blur(1px);
+        border: 1px solid rgba(255,255,255,0.02);
+        text-shadow: 0 0 30px currentColor;
+      }
+      .word-rain span:nth-child(6n+1) { color: rgba(255, 215, 0, 0.35); }
+      .word-rain span:nth-child(6n+2) { color: rgba(168, 85, 247, 0.35); }
+      .word-rain span:nth-child(6n+3) { color: rgba(255, 126, 179, 0.35); }
+      .word-rain span:nth-child(6n+4) { color: rgba(100, 200, 255, 0.35); }
+      .word-rain span:nth-child(6n+5) { color: rgba(52, 211, 153, 0.35); }
+      .word-rain span:nth-child(6n) { color: rgba(255, 107, 107, 0.35); }
+      
+      .word-rain span:nth-child(odd) { animation-duration: 26s; }
+      .word-rain span:nth-child(3n) { animation-duration: 30s; }
+      .word-rain span:nth-child(5n+2) { animation-duration: 20s; }
+      .word-rain span:nth-child(7n+4) { animation-duration: 24s; }
+      
+      @keyframes floatWord {
+        0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.3; }
+        20% { transform: translate(40px, -30px) rotate(4deg) scale(1.1); opacity: 0.9; }
+        40% { transform: translate(-30px, 40px) rotate(-3deg) scale(0.9); opacity: 0.6; }
+        60% { transform: translate(50px, 20px) rotate(5deg) scale(1.05); opacity: 0.9; }
+        80% { transform: translate(-20px, -40px) rotate(-4deg) scale(0.95); opacity: 0.7; }
+        100% { transform: translate(10px, 30px) rotate(2deg) scale(1); opacity: 0.4; }
+      }
+      
+      .login-page, .login-header {
+        position: relative;
+        z-index: 10;
+      }
+      .background-image {
+        z-index: 0;
+      }
+      
+      #notificationContainer {
+        position: fixed !important;
+        top: 20px !important;
+        right: 20px !important;
+        left: auto !important;
+        bottom: auto !important;
+        z-index: 99999 !important;
+        width: auto !important;
+        max-width: 380px !important;
+        pointer-events: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        align-items: flex-end !important;
+      }
+      #notificationContainer > * {
+        pointer-events: auto !important;
+        width: 100% !important;
+      }
+
+      /* HEADER con estilo igual al register */
+      .login-header {
+        backdrop-filter: blur(12px);
+        background: rgba(0,0,0,0.25);
+        border-bottom: 1px solid rgba(255,255,255,0.03);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px 16px;
+        padding: 12px 28px;
+      }
+      .login-header a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        flex-wrap: wrap;
+      }
+      .login-header .logo {
+        filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.6));
+      }
+      .login-header .logoEscrito {
+        filter: drop-shadow(0 0 12px rgba(0, 200, 255, 0.5));
+      }
+
+      /* RESPONSIVE - SOLO HEADER */
+      @media (max-width: 768px) {
+        .login-header {
+          padding: 8px 16px !important;
+          gap: 6px 10px !important;
+        }
+        .login-header .logo {
+          height: 40px !important;
+        }
+        .login-header .logoEscrito {
+          height: 28px !important;
+        }
+        .login-header a {
+          gap: 6px !important;
+        }
+        .word-rain {
+          font-size: 1rem;
+          gap: 15px 25px;
+          padding: 20px 15px;
+          opacity: 0.15;
+        }
+        #notificationContainer {
+          top: 10px !important;
+          right: 10px !important;
+          max-width: 280px !important;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .login-header {
+          padding: 6px 12px !important;
+          gap: 4px 8px !important;
+        }
+        .login-header .logo {
+          height: 34px !important;
+        }
+        .login-header .logoEscrito {
+          height: 24px !important;
+        }
+        .login-header a {
+          gap: 4px !important;
+        }
+        .word-rain {
+          font-size: 0.7rem;
+          gap: 10px 15px;
+          padding: 15px 10px;
+          opacity: 0.12;
+        }
+        #notificationContainer {
+          top: 8px !important;
+          right: 8px !important;
+          max-width: 220px !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <img
+      class="background-image"
+      src="/Alex/frontend/assets/fondo/fondoLogin.png"
+      alt="fondoInicio"
+    />
+
+    <!-- LLUVIA DE PALABRAS ALARAKAS -->
+    <div class="word-rain">
+      <span>alarako</span><span>pata</span><span>al toque</span><span>chamba</span>
+      <span>buenazo</span><span>jato</span><span>causa</span><span>florear</span>
+      <span>roche</span><span>palta</span><span>paja</span><span>huasca</span>
+      <span>chibolo</span><span>sapo</span><span>misio</span><span>aguja</span>
+      <span>lechero</span><span>piña</span><span>tombo</span><span>guachimán</span>
+      <span>bamba</span><span>chongo</span><span>yuca</span><span>papaya</span>
+      <span>mosca</span><span>nica</span><span>zanahoria</span><span>calabacita</span>
+      <span>huachafo</span><span>alarako</span><span>pata</span><span>al toque</span>
+      <span>chamba</span><span>buenazo</span><span>jato</span><span>causa</span>
+      <span>florear</span><span>roche</span><span>palta</span><span>paja</span>
+      <span>huasca</span><span>chibolo</span><span>sapo</span><span>misio</span>
+      <span>aguja</span><span>lechero</span><span>piña</span><span>tombo</span>
+      <span>guachimán</span><span>bamba</span><span>chongo</span><span>yuca</span>
+      <span>papaya</span><span>mosca</span><span>nica</span><span>zanahoria</span>
+      <span>calabacita</span><span>huachafo</span><span>alarako</span><span>pata</span>
+    </div>
+
+    <header class="login-header">
+      <a href="/Alex/index.html">
+        <img
+          src="/Alex/frontend/assets/logo/logoAlex.png"
+          alt="ALSTREAMING"
+          class="logo"
+        />
+        <img
+          src="/Alex/frontend/assets/logo/logoEscrito.png"
+          alt="ALSTREAMING"
+          class="logoEscrito"
+        />
+
+        <!-- badge AL 26 -->
+        <span style="
+          background: linear-gradient(145deg, #facc15, #ff7eb3, #a855f7);
+          padding: 5px 20px;
+          border-radius: 80px;
+          font-size: 0.85rem;
+          font-weight: 800;
+          letter-spacing: 1px;
+          color: #0b0f1a;
+          text-transform: uppercase;
+          box-shadow: 0 0 30px rgba(250, 204, 21, 0.5);
+          border: 1px solid rgba(255,255,255,0.25);
+          backdrop-filter: blur(4px);
+          transform: rotate(-1deg);
+        ">
+          <i class="fa-solid fa-star" style="margin-right: 6px; color: #1e1b2b;"></i>
+          AL 26 · beta
+        </span>
+
+        <!-- frase con jerga -->
+        <span style="
+          background: rgba(0,0,0,0.3);
+          backdrop-filter: blur(10px);
+          padding: 5px 18px;
+          border-radius: 60px;
+          border: 1px solid rgba(255,255,255,0.06);
+          color: #d4def0;
+          font-weight: 500;
+          font-size: 0.8rem;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        ">
+          <i class="fa-solid fa-bolt" style="color: #facc15;"></i>
+          <span style="background: linear-gradient(90deg, #facc15, #ff7eb3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;">+26k</span>
+          patas alarako
+        </span>
+      </a>
+
+      <!-- bloque de jerga en header -->
+      <div style="
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(255,255,255,0.02);
+        backdrop-filter: blur(12px);
+        padding: 6px 22px 6px 18px;
+        border-radius: 80px;
+        border: 1px solid rgba(255,255,255,0.04);
+        flex-wrap: wrap;
+      ">
+        <span style="color: #aab3d0; font-size: 0.8rem; font-weight: 500; display:flex;align-items:center;gap:4px;">
+          <i class="fa-solid fa-hand-peace" style="color: #facc15;"></i>
+          <span style="color: #e0e8ff;">al toque</span>
+        </span>
+        <span style="color: #7a84a5;">|</span>
+        <span style="color: #b9c2e0; font-size: 0.8rem; display:flex;align-items:center;gap:4px;">
+          <i class="fa-solid fa-face-smile-wink" style="color: #84ccff;"></i>
+          #alarako
+        </span>
+        <span style="color: #7a84a5;">|</span>
+        <span style="color: #b9c2e0; font-size: 0.8rem; display:flex;align-items:center;gap:4px;">
+          <i class="fa-solid fa-fire" style="color: #ff7eb3;"></i>
+          buenazo
+        </span>
+        <span style="color: #7a84a5;">|</span>
+        <span style="color: #b9c2e0; font-size: 0.8rem; background: rgba(250,204,21,0.08); padding: 2px 14px; border-radius: 40px; display:flex;align-items:center;gap:4px;">
+          <i class="fa-solid fa-rocket" style="color: #facc15;"></i>
+          2026 flow
+        </span>
+        <span style="color: #7a84a5;">|</span>
+        <span style="color: #b9c2e0; font-size: 0.8rem; display:flex;align-items:center;gap:4px;">
+          <i class="fa-solid fa-star" style="color: #a855f7;"></i>
+          pata
+        </span>
+      </div>
+    </header>
+
+    <main class="login-page">
+      <section class="login-card">
+        <div class="login-image">
+          <img
+            class="login-image-img"
+            src="/Alex/frontend/assets/logo/logoInicio.png"
+            alt="ALSTREAMING"
+          />
+        </div>
+        <div class="login-form-wrapper">
+          <h1 class="login-title" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <span>¡Qué bueno verte!</span>
+            <span style="
+              background: linear-gradient(145deg, #facc15, #ff7eb3);
+              font-size: 0.8rem;
+              font-weight: 800;
+              padding: 2px 14px;
+              border-radius: 50px;
+              color: #0b0f1a;
+              box-shadow: 0 0 20px rgba(250, 204, 21, 0.25);
+            ">
+              <i class="fa-solid fa-hand-peace" style="margin-right: 3px;"></i> 2026
+            </span>
+          </h1>
+          <p class="login-subtitle" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+            <i class="fa-solid fa-sparkles" style="color: #facc15;"></i>
+            Ingresá con tu usuario y empezá la wave
+            <i class="fa-solid fa-sparkles" style="color: #facc15;"></i>
+            <span style="background: rgba(255,255,255,0.03); padding: 1px 10px; border-radius: 30px; font-size: 0.7rem; color: #8892b0; border: 1px solid rgba(255,255,255,0.04);">
+              #alarako
+            </span>
+          </p>
+
+          <form id="loginForm" class="login-form" autocomplete="off" spellcheck="false" novalidate>
+            <label class="login-label">
+              <span style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: #d0daf5;">
+                <i class="fa-solid fa-user" style="color: #84ccff;"></i>
+                Usuario
+              </span>
+              <input
+                id="username"
+                name="username"
+                class="login-input"
+                type="text"
+                placeholder="Ej: Alarako_22"
+                autocomplete="username"
+                maxlength="120"
+                required
+              />
+            </label>
+
+            <label class="login-label">
+              <span style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: #d0daf5;">
+                <i class="fa-solid fa-lock" style="color: #facc15;"></i>
+                Contraseña
+              </span>
+              <input
+                id="password"
+                name="password"
+                class="login-input"
+                type="password"
+                placeholder="••••••••"
+                autocomplete="current-password"
+                minlength="8"
+                maxlength="100"
+                required
+              />
+            </label>
+
+            <input class="input-csrf" type="hidden" id="csrf" name="csrf">
+
+            <button
+              id="btnLogin"
+              class="login-btn"
+              type="submit"
+              aria-label="Iniciar sesion"
+              style="
+                background: linear-gradient(135deg, #6c5ce7, #a855f7, #ec4899);
+                border: none;
+                font-weight: 800;
+                letter-spacing: 1px;
+                box-shadow: 0 8px 32px rgba(168, 85, 247, 0.4);
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                padding: 12px 24px;
+                font-size: 0.9rem;
+                border-radius: 60px;
+              "
+              onmouseover="this.style.boxShadow='0 0 40px rgba(236, 72, 153, 0.6)'; this.style.transform='scale(1.02)';"
+              onmouseout="this.style.boxShadow='0 8px 32px rgba(168, 85, 247, 0.4)'; this.style.transform='scale(1)';"
+            >
+              INICIAR SESIÓN
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+            <p class="login-Link" style="display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 0.85rem;">
+              <span style="color: #aab3d0;">¿Olvidaste tu contraseña?</span>
+              <a href="/frontend/pages/" style="
+                font-weight: 700;
+                background: linear-gradient(90deg, #facc15, #ff7eb3);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-decoration: none;
+                border-bottom: 2px solid rgba(250, 204, 21, 0.3);
+              ">
+                Recuperar acceso
+              </a>
+            </p>
+            <p class="register-link" style="display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 0.85rem;">
+              <span style="color: #aab3d0;">¿Aún no tienes cuenta?</span>
+              <a href="/Alex/frontend/pages/register.html" style="
+                font-weight: 700;
+                background: linear-gradient(90deg, #facc15, #ff7eb3);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-decoration: none;
+                border-bottom: 2px solid rgba(250, 204, 21, 0.3);
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+              ">
+                <i class="fa-solid fa-user-plus"></i>
+                Crear cuenta
+              </a>
+              <span style="color: #5b6480;">·</span>
+              <span style="color: #6b7495; font-size: 0.7rem; background: rgba(255,255,255,0.02); padding: 1px 8px; border-radius: 30px; display:inline-flex;align-items:center;gap:3px;">
+                <i class="fa-solid fa-face-smile"></i> #alarako
+              </span>
+            </p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <div id="notificationContainer" class="containerNotification"></div>
+
+    <script src="/Alex/frontend/src/js/login.js" defer></script>
+  </body>
+</html>

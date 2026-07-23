@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALSTREAMING | Administrador</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <div class="admin-layout">
+      <!-- ===================== SIDEBAR ===================== -->
+      <aside class="sidebar">
+        <div class="logo-admin">
+          <img
+            src="/Alex/frontend/assets/logo/logoEscrito.png"
+            alt="AlStreaming"
+          />
+          <span> Panel Administrativo</span>
+        </div>
+
+        <nav class="menu">
+          <a href="#inicio" class="active" data-section="inicio">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M3 12l9-9 9 9" />
+              <path
+                d="M5 10v10a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V10"
+              />
+            </svg>
+            Dashboard
+          </a>
+          <a href="#categoria" data-section="categoria">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"
+              />
+            </svg>
+            Categorías
+          </a>
+          <a href="#productos" data-section="productos">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="7" width="20" height="14" rx="2" />
+              <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+            </svg>
+            Productos
+          </a>
+          <a href="#clientes" data-section="clientes">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 00-3-3.87" />
+              <path d="M16 3.13a4 4 0 010 7.75" />
+            </svg>
+            Clientes
+          </a>
+          <a href="#ventas" data-section="ventas">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
+            </svg>
+            Ventas
+          </a>
+          <a href="#reportes" data-section="reportes">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 12v-2a5 5 0 00-5-5H8a5 5 0 00-5 5v2" />
+              <circle cx="12" cy="16" r="5" />
+              <path d="M12 11v5" />
+            </svg>
+            Reportes
+          </a>
+          <a href="#configuracion" data-section="configuracion">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"
+              />
+            </svg>
+            Configuración
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button id="btnCerrarSesion" onclick="cerrarSesionAdmin()">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+              <path d="M16 17l5-5-5-5" />
+              <path d="M21 12H9" />
+            </svg>
+            Cerrar sesión
+          </button>
+        </div>
+      </aside>
+
+      <!-- ===================== MAIN ===================== -->
+      <main class="main-content">
+        <!-- ======= SECCIÓN INICIO ======= -->
+        <section id="inicio" class="section-content">
+          <header class="top-header">
+            <div>
+              <h1>Dashboard</h1>
+              <p>Resumen general de la plataforma</p>
+            </div>
+            <div class="admin-user">
+              <div class="avatar" id="adminAvatar">A</div>
+              <div>
+                <strong id="adminUsername">Administrador</strong><br />
+                <span id="adminEmail">admin@alstreaming.com</span>
+              </div>
+            </div>
+          </header>
+          <div class="stats">
+            <div class="stat-card">
+              <h3>Categorías</h3>
+              <strong id="totalCategorias">0</strong>
+            </div>
+            <div class="stat-card">
+              <h3>Productos</h3>
+              <strong id="totalProductos">0</strong>
+            </div>
+            <div class="stat-card">
+              <h3>Ventas</h3>
+              <strong>0</strong>
+            </div>
+            <div class="stat-card">
+              <h3>Clientes</h3>
+              <strong>0</strong>
+            </div>
+          </div>
+          <div style="padding: 1.5rem 0; color: #666">
+            Bienvenido al panel de administración. Selecciona una opción del
+            menú.
+          </div>
+        </section>
+
+        <!-- ======= SECCIÓN CLIENTES ======= -->
+        <section id="clientes" class="section-content" style="display: none">
+          <header class="top-header">
+            <div>
+              <h1>Clientes</h1>
+              <p>Gestión de usuarios registrados</p>
+            </div>
+          </header>
+          <div style="padding: 2rem 0; color: #666">
+            Aquí se mostrará la lista de clientes.
+          </div>
+        </section>
+
+        <!-- ======= SECCIÓN VENTAS ======= -->
+        <!-- ======= SECCIÓN VENTAS ======= -->
+        <section id="ventas" class="section-content" style="display: none">
+          <header class="top-header">
+            <div>
+              <h1>Ventas y Tickets</h1>
+              <p>Gestión de compras, tickets y asignación de cuentas</p>
+            </div>
+            <div style="display: flex; gap: 10px">
+              <input
+                type="text"
+                id="buscarVenta"
+                placeholder="🔍 Buscar ticket o cliente..."
+                style="
+                  padding: 10px 15px;
+                  background: rgba(255, 255, 255, 0.05);
+                  border: 1px solid rgba(255, 255, 255, 0.1);
+                  border-radius: 8px;
+                  color: #fff;
+                  font-size: 14px;
+                  width: 250px;
+                "
+              />
+            </div>
+          </header>
+
+          <!-- Estadísticas de ventas -->
+          <div class="stats" style="margin-bottom: 20px">
+            <div class="stat-card">
+              <h3>Total Ventas</h3>
+              <strong id="totalVentasAdmin">0</strong>
+            </div>
+            <div class="stat-card">
+              <h3>Pendientes</h3>
+              <strong id="totalPendientesAdmin" style="color: #ffbb33"
+                >0</strong
+              >
+            </div>
+            <div class="stat-card">
+              <h3>En Soporte</h3>
+              <strong id="totalSoporteAdmin" style="color: #667eea">0</strong>
+            </div>
+            <div class="stat-card">
+              <h3>Expirados</h3>
+              <strong id="totalExpiradosAdmin" style="color: #ff4444">0</strong>
+            </div>
+          </div>
+
+          <!-- Tabla de ventas -->
+          <div
+            class="table-container"
+            style="
+              background: rgba(255, 255, 255, 0.02);
+              border: 1px solid rgba(255, 255, 255, 0.08);
+              border-radius: 15px;
+              overflow: hidden;
+            "
+          >
+            <div style="overflow-x: auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Ticket</th>
+                    <th>Cliente</th>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>WhatsApp</th>
+                    <th>Email</th>
+                    <th>Contraseña</th>
+                    <th>PIN</th>
+                    <th>Perfil</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaVentasAdmin">
+                  <tr>
+                    <td colspan="13">
+                      <div
+                        style="text-align: center; padding: 40px; color: #666"
+                      >
+                        <i class="fa-solid fa-spinner fa-spin"></i> Cargando
+                        ventas...
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======= MODAL EDITAR VENTA (ADMIN LLENA DATOS) ======= -->
+        <div class="modal-producto" id="modalEditarVenta" style="display: none">
+          <div class="modal-content" style="max-width: 700px">
+            <h2 id="tituloModalVenta">🎫 Gestionar Ticket</h2>
+            <form id="formEditarVenta">
+              <input type="hidden" id="ventaTicketId" />
+
+              <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px"
+              >
+                <!-- Columna 1 -->
+                <div>
+                  <label>📧 Correo / Email</label>
+                  <input
+                    type="email"
+                    id="ventaEmail"
+                    placeholder="correo@ejemplo.com"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      background: rgba(255, 255, 255, 0.05);
+                      border: 1px solid rgba(255, 255, 255, 0.1);
+                      border-radius: 8px;
+                      color: #fff;
+                      font-size: 14px;
+                    "
+                  />
+                </div>
+
+                <div>
+                  <label>🔐 Contraseña</label>
+                  <input
+                    type="text"
+                    id="ventaPassword"
+                    placeholder="Contraseña de la cuenta"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      background: rgba(255, 255, 255, 0.05);
+                      border: 1px solid rgba(255, 255, 255, 0.1);
+                      border-radius: 8px;
+                      color: #fff;
+                      font-size: 14px;
+                    "
+                  />
+                </div>
+
+                <div>
+                  <label>🔢 PIN</label>
+                  <input
+                    type="text"
+                    id="ventaPin"
+                    placeholder="PIN de 4 dígitos"
+                    maxlength="4"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      background: rgba(255, 255, 255, 0.05);
+                      border: 1px solid rgba(255, 255, 255, 0.1);
+                      border-radius: 8px;
+                      color: #fff;
+                      font-size: 14px;
+                    "
+                  />
+                </div>
+
+                <div>
+                  <label>👤 Perfil</label>
+                  <input
+                    type="text"
+                    id="ventaPerfil"
+                    placeholder="Nombre del perfil"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      background: rgba(255, 255, 255, 0.05);
+                      border: 1px solid rgba(255, 255, 255, 0.1);
+                      border-radius: 8px;
+                      color: #fff;
+                      font-size: 14px;
+                    "
+                  />
+                </div>
+
+                <div>
+                  <label>📅 Fecha de Inicio</label>
+                  <input
+                    type="date"
+                    id="ventaStartDate"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      background: rgba(255, 255, 255, 0.05);
+                      border: 1px solid rgba(255, 255, 255, 0.1);
+                      border-radius: 8px;
+                      color: #fff;
+                      font-size: 14px;
+                    "
+                  />
+                </div>
+
+                <div>
+                  <label>📅 Fecha de Fin</label>
+                  <input
+                    type="date"
+                    id="ventaEndDate"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      background: rgba(255, 255, 255, 0.05);
+                      border: 1px solid rgba(255, 255, 255, 0.1);
+                      border-radius: 8px;
+                      color: #fff;
+                      font-size: 14px;
+                    "
+                  />
+                </div>
+
+                <div>
+                  <label>👤 Nombre del Cliente</label>
+                  <input
+                    type="text"
+                    id="ventaCustomerName"
+                    placeholder="Nombre completo"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      background: rgba(255, 255, 255, 0.05);
+                      border: 1px solid rgba(255, 255, 255, 0.1);
+                      border-radius: 8px;
+                      color: #fff;
+                      font-size: 14px;
+                    "
+                  />
+                </div>
+
+                <div>
+                  <label>📱 WhatsApp</label>
+                  <input
+                    type="text"
+                    id="ventaWhatsapp"
+                    placeholder="+51 999 888 777"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      background: rgba(255, 255, 255, 0.05);
+                      border: 1px solid rgba(255, 255, 255, 0.1);
+                      border-radius: 8px;
+                      color: #fff;
+                      font-size: 14px;
+                    "
+                  />
+                </div>
+              </div>
+
+              <div style="margin-top: 15px">
+                <label>📝 Notas</label>
+                <textarea
+                  id="ventaNotas"
+                  rows="3"
+                  placeholder="Notas adicionales..."
+                  style="
+                    width: 100%;
+                    padding: 10px;
+                    background: rgba(255, 255, 255, 0.05);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    border-radius: 8px;
+                    color: #fff;
+                    font-size: 14px;
+                    font-family: &quot;Inter&quot;, sans-serif;
+                  "
+                ></textarea>
+              </div>
+
+              <div style="margin-top: 15px">
+                <label>📊 Estado</label>
+                <select
+                  id="ventaStatus"
+                  style="
+                    width: 100%;
+                    padding: 10px;
+                    background: rgba(255, 255, 255, 0.05);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    border-radius: 8px;
+                    color: #fff;
+                    font-size: 14px;
+                  "
+                >
+                  <option value="available">Disponible</option>
+                  <option value="support">En Soporte</option>
+                  <option value="renewal">Renovación</option>
+                  <option value="expired">Expirado</option>
+                </select>
+              </div>
+
+              <div class="modal-actions" style="margin-top: 20px">
+                <button type="submit" class="btn-primary" style="flex: 1">
+                  💾 Guardar Cambios
+                </button>
+                <button
+                  type="button"
+                  id="cerrarModalVenta"
+                  class="btn-danger"
+                  style="flex: 1"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- ======= SECCIÓN CONFIGURACIÓN ======= -->
+        <section
+          id="configuracion"
+          class="section-content"
+          style="display: none"
+        >
+          <header class="top-header">
+            <div>
+              <h1>Configuración</h1>
+              <p>Ajustes generales del sistema</p>
+            </div>
+          </header>
+          <div style="padding: 2rem 0; color: #666">
+            Opciones de configuración disponibles.
+          </div>
+        </section>
+
+        <!-- ======= SECCIÓN REPORTES ======= -->
+        <section id="reportes" class="section-content" style="display: none">
+          <header class="top-header">
+            <div>
+              <h1>Reportes</h1>
+              <p>Estadísticas y análisis</p>
+            </div>
+          </header>
+          <div style="padding: 2rem 0; color: #666">
+            Generación de reportes personalizados.
+          </div>
+        </section>
+
+        <!-- ======= SECCIÓN PRODUCTOS ======= -->
+        <section id="productos" class="section-content" style="display: none">
+          <header class="top-header">
+            <div>
+              <h1>Gestión de Productos</h1>
+              <p>Administra los productos registrados en la plataforma.</p>
+            </div>
+            <button class="btn-nuevo-producto" id="btnNuevoProducto">
+              Nuevo Producto
+            </button>
+          </header>
+          <div class="productos-panel">
+            <div class="productos-toolbar">
+              <input
+                type="text"
+                id="buscarProducto"
+                placeholder="Buscar producto..."
+              />
+              <select id="filtroEstado">
+                <option value="">Todos los estados</option>
+                <option value="active">Activos</option>
+                <option value="inactive">Inactivos</option>
+              </select>
+            </div>
+            <div class="tabla-productos" id="tablaProductos">
+              <!-- Aquí JS cargará los productos -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ======= SECCIÓN CATEGORÍA ======= -->
+        <section id="categoria" class="section-content" style="display: none">
+          <header class="top-header">
+            <div>
+              <h1>Gestión de Categorías</h1>
+              <p>Administra las categorías donde estarán tus productos.</p>
+            </div>
+            <div class="admin-user">
+              <div class="avatar" id="adminAvatarCat">A</div>
+              <div>
+                <strong id="adminUsernameCat">Administrador</strong><br />
+                <span id="adminEmailCat">admin@alstreaming.com</span>
+              </div>
+            </div>
+          </header>
+
+          <!-- TARJETAS RESUMEN -->
+          <section class="stats">
+            <div class="stat-card">
+              <h3>Categorías</h3>
+              <strong id="totalCategoriasCat">0</strong>
+            </div>
+            <div class="stat-card">
+              <h3>Productos</h3>
+              <strong id="totalProductosCat">0</strong>
+            </div>
+            <div class="stat-card">
+              <h3>Ventas</h3>
+              <strong>0</strong>
+            </div>
+            <div class="stat-card">
+              <h3>Clientes</h3>
+              <strong>0</strong>
+            </div>
+          </section>
+
+          <!-- HERRAMIENTAS -->
+          <section class="toolbar">
+            <button id="btnNuevaCategoria" class="btn-primary">
+              + Nueva Categoría
+            </button>
+            <input
+              type="search"
+              id="searchCategoria"
+              placeholder="Buscar categoría..."
+            />
+          </section>
+
+          <!-- TABLA CATEGORIAS -->
+          <section class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Imagen</th>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Productos</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tablaCategorias">
+                <tr>
+                  <td colspan="6">Cargando categorías...</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- MODAL CATEGORIA -->
+          <div class="modal" id="modalCategoria">
+            <div class="modal-content">
+              <h2 id="tituloModal">Nueva Categoría</h2>
+              <form id="formCategoria">
+                <input type="hidden" id="categoriaId" />
+                <label>Imagen desde archivo</label>
+                <input
+                  type="file"
+                  id="archivoCategoria"
+                  accept="image/png,image/jpeg,image/webp"
+                />
+                <label>Vista previa</label>
+                <div class="preview-image">
+                  <img id="previewCategoria" src="" alt="Vista previa" />
+                </div>
+                <label>O usar URL de imagen</label>
+                <input
+                  type="text"
+                  id="imagenCategoria"
+                  placeholder="https://imagen.com/logo.jpg"
+                />
+                <label>Nombre</label>
+                <input
+                  type="text"
+                  id="nombreCategoria"
+                  placeholder="Nombre categoría"
+                  required
+                />
+                <label>Descripción</label>
+                <textarea
+                  id="descripcionCategoria"
+                  rows="5"
+                  placeholder="Descripción de la categoría"
+                ></textarea>
+                <div class="modal-actions">
+                  <button type="submit" class="btn-primary">Guardar</button>
+                  <button type="button" id="cerrarModal" class="btn-danger">
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODAL PRODUCTO -->
+        <div class="modal-producto" id="modalProducto" style="display: none">
+          <div class="modal-content">
+            <h2 id="tituloModalProducto">Nuevo Producto</h2>
+            <form id="formProducto">
+              <input type="hidden" id="productoId" />
+              <label> Categoría </label>
+              <select id="categoriaProducto" required>
+                <option value="">Seleccione categoría</option>
+              </select>
+              <label>Imagen desde archivo</label>
+              <input
+                type="file"
+                id="archivoProducto"
+                accept="image/png,image/jpeg,image/webp"
+              />
+              <label>Vista previa</label>
+              <div class="preview-image">
+                <img id="previewProducto" src="" alt="Vista previa producto" />
+              </div>
+              <label>O usar URL de imagen</label>
+              <input
+                type="text"
+                id="imagenProducto"
+                placeholder="https://imagen.com/producto.jpg"
+              />
+              <label> Nombre del producto </label>
+              <input
+                type="text"
+                id="nombreProducto"
+                placeholder="Nombre producto"
+                required
+              />
+              <label> Descripción corta </label>
+              <textarea
+                id="descripcionProducto"
+                placeholder="Descripción del producto"
+              ></textarea>
+              <label> Detalles </label>
+              <textarea
+                id="detallesProducto"
+                placeholder="Detalles del producto"
+              ></textarea>
+              <label> Términos </label>
+              <textarea
+                id="terminosProducto"
+                placeholder="Términos y condiciones"
+              ></textarea>
+              <label> Stock </label>
+              <input type="number" id="stockProducto" value="0" min="0" />
+              <label> Tipo de producto </label>
+              <select id="renovableProducto">
+                <option value="renewable">Renovable</option>
+                <option value="non_renewable">No renovable</option>
+              </select>
+              <label> Precio normal </label>
+              <input type="number" step="0.01" id="precioProducto" required />
+              <label> Precio renovación </label>
+              <input type="number" step="0.01" id="precioRenovacion" />
+              <label> Estado stock </label>
+              <select id="estadoStock">
+                <option value="in_stock">Disponible</option>
+                <option value="on_request">Bajo pedido</option>
+                <option value="activation">Activación</option>
+              </select>
+              <label> Activo </label>
+              <select id="activoProducto">
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+              <div class="modal-actions">
+                <button type="submit" class="btn-primary">
+                  Guardar Producto
+                </button>
+                <button
+                  type="button"
+                  id="cerrarModalProducto"
+                  class="btn-danger"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- VERIFICACIÓN DE SESIÓN DE ADMINISTRADOR                      -->
+    <!-- ============================================================ -->
+    <script>
+      // ============================================================
+      // 🔥 PROTECCIÓN DE RUTA - SOLO ADMIN PUEDE VER ESTA PÁGINA
+      // ============================================================
+      (function () {
+        // Verificar sesión inmediatamente
+        const sesion = verificarSesionAdmin();
+
+        if (!sesion) {
+          // No hay sesión - redirigir al login
+          console.warn("⛔ Acceso denegado: No hay sesión activa");
+          window.location.replace("/Alex/frontend/pages/login.html");
+          return;
+        }
+
+        if (sesion.role !== "admin") {
+          // No es admin - redirigir al index
+          console.warn("⛔ Acceso denegado: El usuario no es administrador");
+          alert(
+            "No tienes permisos de administrador. Serás redirigido al inicio.",
+          );
+          window.location.replace("/Alex/index.html");
+          return;
+        }
+
+        // Es admin - mostrar datos del usuario
+        console.log("✅ Acceso permitido: Administrador", sesion.username);
+
+        // Actualizar datos del admin en la interfaz
+        actualizarDatosAdmin(sesion);
+
+        function verificarSesionAdmin() {
+          try {
+            const sesionData = localStorage.getItem("alstreaming_session");
+
+            if (!sesionData) {
+              console.log("🔍 No se encontró sesión en localStorage");
+              return null;
+            }
+
+            const session = JSON.parse(sesionData);
+
+            // Verificar expiración (24 horas)
+            if (Date.now() > session.expira) {
+              console.warn("⚠️ Sesión expirada");
+              localStorage.removeItem("alstreaming_session");
+              return null;
+            }
+
+            return session;
+          } catch (error) {
+            console.error("❌ Error al verificar sesión:", error);
+            localStorage.removeItem("alstreaming_session");
+            return null;
+          }
+        }
+
+        function actualizarDatosAdmin(sesion) {
+          // Actualizar nombre y email en la sección Dashboard
+          const adminUsername = document.getElementById("adminUsername");
+          const adminEmail = document.getElementById("adminEmail");
+          const adminAvatar = document.getElementById("adminAvatar");
+
+          if (adminUsername) {
+            adminUsername.textContent = sesion.username || "Administrador";
+          }
+
+          if (adminEmail) {
+            adminEmail.textContent = sesion.email || "admin@alstreaming.com";
+          }
+
+          if (adminAvatar && sesion.username) {
+            adminAvatar.textContent = sesion.username.charAt(0).toUpperCase();
+          }
+
+          // Actualizar en la sección Categorías también
+          const adminUsernameCat = document.getElementById("adminUsernameCat");
+          const adminEmailCat = document.getElementById("adminEmailCat");
+          const adminAvatarCat = document.getElementById("adminAvatarCat");
+
+          if (adminUsernameCat) {
+            adminUsernameCat.textContent = sesion.username || "Administrador";
+          }
+
+          if (adminEmailCat) {
+            adminEmailCat.textContent = sesion.email || "admin@alstreaming.com";
+          }
+
+          if (adminAvatarCat && sesion.username) {
+            adminAvatarCat.textContent = sesion.username
+              .charAt(0)
+              .toUpperCase();
+          }
+        }
+      })();
+
+      // ============================================================
+      // FUNCIÓN GLOBAL PARA CERRAR SESIÓN
+      // ============================================================
+      function cerrarSesionAdmin() {
+        try {
+          // Confirmar antes de cerrar sesión
+          if (!confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+            return;
+          }
+
+          // Limpiar localStorage
+          localStorage.removeItem("alstreaming_session");
+
+          // Limpiar sessionStorage
+          sessionStorage.clear();
+
+          // Eliminar cookies
+          document.cookie.split(";").forEach(function (cookie) {
+            var eqPos = cookie.indexOf("=");
+            var name =
+              eqPos > -1 ? cookie.substring(0, eqPos).trim() : cookie.trim();
+            document.cookie =
+              name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+          });
+
+          console.log("🔒 Sesión de administrador cerrada correctamente");
+
+          // Redirigir al login con replace para no poder volver atrás
+          window.location.replace("/Alex/frontend/pages/login.html");
+        } catch (error) {
+          console.error("❌ Error al cerrar sesión:", error);
+          // Forzar redirección incluso si hay error
+          window.location.replace("/Alex/frontend/pages/login.html");
+        }
+      }
+    </script>
+
+    <script src="admin.js"></script>
+    <script>
+      // ============================================================
+      //  NAVEGACIÓN ENTRE SECCIONES (sin cambiar IDs de categorías)
+      // ============================================================
+      (function () {
+        const menuLinks = document.querySelectorAll(".menu a[data-section]");
+        const sections = {
+          inicio: document.getElementById("inicio"),
+          categoria: document.getElementById("categoria"),
+          productos: document.getElementById("productos"),
+          clientes: document.getElementById("clientes"),
+          ventas: document.getElementById("ventas"),
+          reportes: document.getElementById("reportes"),
+          configuracion: document.getElementById("configuracion"),
+        };
+
+        function showSection(sectionId) {
+          // Ocultar todas
+          Object.keys(sections).forEach((key) => {
+            if (sections[key]) sections[key].style.display = "none";
+          });
+          // Mostrar la seleccionada
+          if (sections[sectionId]) {
+            sections[sectionId].style.display = "block";
+          }
+          // Actualizar clase active en menú
+          menuLinks.forEach((link) => {
+            link.classList.remove("active");
+            if (link.dataset.section === sectionId) {
+              link.classList.add("active");
+            }
+          });
+        }
+
+        // Evento clicks en menú
+        menuLinks.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            const sectionId = this.dataset.section;
+            if (sectionId) {
+              showSection(sectionId);
+              // Cambiar hash sin scroll
+              history.pushState(null, "", "#" + sectionId);
+            }
+          });
+        });
+
+        // Al cargar la página, mostrar según hash o por defecto 'inicio'
+        const hash = window.location.hash.replace("#", "");
+        if (hash && sections[hash]) {
+          showSection(hash);
+        } else {
+          showSection("inicio");
+        }
+
+        // Al cambiar hash (botón atrás/adelante)
+        window.addEventListener("hashchange", function () {
+          const h = window.location.hash.replace("#", "");
+          if (h && sections[h]) {
+            showSection(h);
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

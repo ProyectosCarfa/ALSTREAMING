@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#040404" />
+    <title>ALSTREAMING | Mi Perfil</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <style>
+      /* ============================================================
+         ESTILOS PERFIL
+         ============================================================ */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: #fff;
+      }
+
+      .perfil-container {
+        width: 100%;
+        max-width: 600px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      }
+
+      .perfil-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .avatar-container {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 20px;
+      }
+
+      .avatar-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #667eea;
+        box-shadow: 0 0 30px rgba(102, 126, 234, 0.4);
+        background: #1a1a2e;
+      }
+
+      .avatar-upload {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 3px solid #0a0a0a;
+      }
+
+      .avatar-upload:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
+      }
+
+      .avatar-upload i {
+        color: white;
+        font-size: 18px;
+      }
+
+      #inputAvatar {
+        display: none;
+      }
+
+      .perfil-header h1 {
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 5px;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .rol-badge {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .rol-admin {
+        background: rgba(255, 0, 0, 0.2);
+        color: #ff4444;
+        border: 1px solid #ff4444;
+      }
+
+      .rol-customer {
+        background: rgba(102, 126, 234, 0.2);
+        color: #667eea;
+        border: 1px solid #667eea;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #aaa;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .form-group label i {
+        margin-right: 8px;
+        color: #667eea;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 12px 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        color: #fff;
+        font-size: 16px;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 15px rgba(102, 126, 234, 0.2);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .form-group input:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .btn-guardar {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .btn-guardar:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-guardar:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .btn-volver {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        color: #aaa;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+      }
+
+      .btn-volver:hover {
+        color: #667eea;
+      }
+
+      .notificacion {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        z-index: 9999;
+        animation: slideIn 0.5s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .notificacion.success {
+        background: linear-gradient(45deg, #00b09b, #96c93d);
+      }
+
+      .notificacion.error {
+        background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .stats-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .stat-item {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .stat-item .stat-valor {
+        font-size: 24px;
+        font-weight: 800;
+        color: #667eea;
+      }
+
+      .stat-item .stat-label {
+        font-size: 12px;
+        color: #aaa;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="perfil-container">
+      <div class="perfil-header">
+        <div class="avatar-container">
+          <img
+            id="avatarImg"
+            src="https://via.placeholder.com/120"
+            alt="Avatar"
+            class="avatar-img"
+          />
+          <label for="inputAvatar" class="avatar-upload">
+            <i class="fa-solid fa-camera"></i>
+          </label>
+          <input type="file" id="inputAvatar" accept="image/*" />
+        </div>
+        <h1 id="nombreUsuario">Cargando...</h1>
+        <span id="rolBadge" class="rol-badge rol-customer">CLIENTE</span>
+      </div>
+
+      <div class="stats-info">
+        <div class="stat-item">
+          <div class="stat-valor" id="totalCompras">0</div>
+          <div class="stat-label">Compras</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-valor" id="miembroDesde">-</div>
+          <div class="stat-label">Miembro desde</div>
+        </div>
+      </div>
+
+      <form id="formPerfil">
+        <div class="form-group">
+          <label><i class="fa-solid fa-user"></i> Nombre de usuario</label>
+          <input
+            type="text"
+            id="username"
+            placeholder="Tu nombre de usuario"
+            required
+            disabled
+          />
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-envelope"></i> Correo electrónico</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="tu@email.com"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-phone"></i> Teléfono</label>
+          <input
+            type="tel"
+            id="phone"
+            placeholder="+51 999 888 777"
+          />
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-lock"></i> Nueva contraseña</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Dejar vacío para no cambiar"
+            minlength="8"
+          />
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-lock"></i> Confirmar contraseña</label>
+          <input
+            type="password"
+            id="passwordConfirm"
+            placeholder="Repite la nueva contraseña"
+            minlength="8"
+          />
+        </div>
+
+        <button type="submit" class="btn-guardar" id="btnGuardar">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+        </button>
+      </form>
+
+      <a href="/Alex/index.html" class="btn-volver">
+        <i class="fa-solid fa-arrow-left"></i> Volver al inicio
+      </a>
+    </div>
+
+    <script>
+      // ============================================================
+      // PERFIL - CARGAR Y ACTUALIZAR DATOS
+      // ============================================================
+      
+      const API_PERFIL = "/Alex/backend/api/perfil.php";
+      let avatarFile = null;
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Verificar sesión
+        const sesion = verificarSesion();
+        
+        if (!sesion) {
+          window.location.replace("/Alex/frontend/pages/login.html");
+          return;
+        }
+
+        // Cargar datos del perfil
+        cargarPerfil(sesion);
+        
+        // Eventos
+        document.getElementById("inputAvatar").addEventListener("change", previewAvatar);
+        document.getElementById("formPerfil").addEventListener("submit", guardarPerfil);
+      });
+
+      // ============================================================
+      // VERIFICAR SESIÓN
+      // ============================================================
+      function verificarSesion() {
+        try {
+          const sesionData = localStorage.getItem("alstreaming_session");
+          if (!sesionData) return null;
+          
+          const session = JSON.parse(sesionData);
+          
+          if (Date.now() > session.expira) {
+            localStorage.removeItem("alstreaming_session");
+            return null;
+          }
+          
+          return session;
+        } catch (error) {
+          return null;
+        }
+      }
+
+      // ============================================================
+      // CARGAR DATOS DEL PERFIL
+      // ============================================================
+      async function cargarPerfil(sesion) {
+        try {
+          // Mostrar datos del localStorage primero
+          document.getElementById("nombreUsuario").textContent = sesion.username || "Usuario";
+          document.getElementById("username").value = sesion.username || "";
+          document.getElementById("email").value = sesion.email || "";
+          document.getElementById("phone").value = sesion.phone || "";
+          
+          // ============================================================
+          // 🔥 CORREGIDO: Mostrar avatar del localStorage
+          // ============================================================
+          if (sesion.avatar) {
+            document.getElementById("avatarImg").src = imagenURL(sesion.avatar);
+          }
+          
+          // Mostrar rol
+          const rolBadge = document.getElementById("rolBadge");
+          if (sesion.role === "admin") {
+            rolBadge.textContent = "ADMINISTRADOR";
+            rolBadge.className = "rol-badge rol-admin";
+          } else {
+            rolBadge.textContent = "CLIENTE";
+            rolBadge.className = "rol-badge rol-customer";
+          }
+
+          // Cargar datos del servidor
+          const response = await fetch(`${API_PERFIL}?action=get&id=${sesion.id}`, {
+            credentials: "include"
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            const user = result.data;
+            
+            document.getElementById("username").value = user.username || "";
+            document.getElementById("email").value = user.email || "";
+            document.getElementById("phone").value = user.phone || "";
+            
+            // ============================================================
+            // 🔥 CORREGIDO: Mostrar avatar del servidor
+            // ============================================================
+            if (user.avatar) {
+              document.getElementById("avatarImg").src = imagenURL(user.avatar);
+            }
+            
+            document.getElementById("totalCompras").textContent = user.total_compras || 0;
+            document.getElementById("miembroDesde").textContent = formatDate(user.created_at);
+            
+            // Actualizar localStorage con datos del servidor
+            actualizarLocalStorage(user);
+          }
+        } catch (error) {
+          console.error("Error cargando perfil:", error);
+          mostrarNotificacion("Error al cargar los datos del perfil", "error");
+        }
+      }
+
+      // ============================================================
+      // PREVIEW AVATAR
+      // ============================================================
+      function previewAvatar() {
+        const file = document.getElementById("inputAvatar").files[0];
+        if (!file) return;
+        
+        avatarFile = file;
+        
+        const reader = new FileReader();
+        reader.onload = () => {
+          document.getElementById("avatarImg").src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // ============================================================
+      // GUARDAR PERFIL
+      // ============================================================
+      async function guardarPerfil(e) {
+        e.preventDefault();
+        
+        const btnGuardar = document.getElementById("btnGuardar");
+        const password = document.getElementById("password").value;
+        const passwordConfirm = document.getElementById("passwordConfirm").value;
+        
+        // Validar contraseñas
+        if (password || passwordConfirm) {
+          if (password !== passwordConfirm) {
+            mostrarNotificacion("Las contraseñas no coinciden", "error");
+            return;
+          }
+          if (password.length < 8) {
+            mostrarNotificacion("La contraseña debe tener mínimo 8 caracteres", "error");
+            return;
+          }
+        }
+        
+        btnGuardar.disabled = true;
+        btnGuardar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+        
+        try {
+          let avatarUrl = "";
+          
+          // Subir avatar si hay archivo nuevo
+          if (avatarFile) {
+            const formData = new FormData();
+            formData.append("avatar", avatarFile);
+            
+            const uploadResponse = await fetch(`${API_PERFIL}?action=upload`, {
+              method: "POST",
+              body: formData
+            });
+            
+            const uploadResult = await uploadResponse.json();
+            
+            if (uploadResult.success) {
+              avatarUrl = uploadResult.url;
+            } else {
+              mostrarNotificacion(uploadResult.message || "Error al subir avatar", "error");
+              btnGuardar.disabled = false;
+              btnGuardar.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar Cambios';
+              return;
+            }
+          }
+          
+          // Actualizar datos
+          const sesion = verificarSesion();
+          
+          const data = {
+            id: sesion.id,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value
+          };
+          
+          if (password) {
+            data.password = password;
+          }
+          
+          if (avatarUrl) {
+            data.avatar = avatarUrl;
+          }
+          
+          const response = await fetch(`${API_PERFIL}?action=update`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            mostrarNotificacion("Perfil actualizado correctamente", "success");
+            
+            // Actualizar localStorage con los datos retornados
+            if (result.data) {
+              actualizarLocalStorage(result.data);
+              
+              // ============================================================
+              // 🔥 CORREGIDO: Actualizar avatar en la página inmediatamente
+              // ============================================================
+              if (result.data.avatar) {
+                document.getElementById("avatarImg").src = imagenURL(result.data.avatar);
+              }
+            }
+            
+            avatarFile = null;
+            document.getElementById("password").value = "";
+            document.getElementById("passwordConfirm").value = "";
+          } else {
+            mostrarNotificacion(result.message || "Error al actualizar", "error");
+          }
+        } catch (error) {
+          console.error("Error guardando perfil:", error);
+          mostrarNotificacion("Error al guardar los cambios", "error");
+        } finally {
+          btnGuardar.disabled = false;
+          btnGuardar.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar Cambios';
+        }
+      }
+
+      // ============================================================
+      // ACTUALIZAR LOCALSTORAGE
+      // ============================================================
+      function actualizarLocalStorage(user) {
+        try {
+          const sesionActual = JSON.parse(localStorage.getItem("alstreaming_session"));
+          
+          const nuevaSesion = {
+            ...sesionActual,
+            username: user.username || sesionActual.username,
+            email: user.email || sesionActual.email,
+            phone: user.phone || sesionActual.phone,
+            avatar: user.avatar || sesionActual.avatar
+          };
+          
+          localStorage.setItem("alstreaming_session", JSON.stringify(nuevaSesion));
+          console.log("✅ localStorage actualizado con avatar:", nuevaSesion.avatar);
+        } catch (error) {
+          console.error("Error actualizando localStorage:", error);
+        }
+      }
+
+      // ============================================================
+      // 🔥 CORREGIDO: UTILIDAD IMAGEN URL
+      // ============================================================
+      function imagenURL(img) {
+        if (!img) return "https://via.placeholder.com/120";
+        if (img.startsWith("http")) return img;
+        if (img.startsWith("data:")) return img;
+        if (img.startsWith("/")) return img;
+        // Si es ruta relativa tipo "uploads/avatars/..."
+        return "/Alex/" + img;
+      }
+
+      function formatDate(dateString) {
+        if (!dateString) return "-";
+        const date = new Date(dateString);
+        return date.toLocaleDateString("es-PE", {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+      }
+
+      function mostrarNotificacion(mensaje, tipo = "info") {
+        // Eliminar notificaciones anteriores
+        const oldNotif = document.querySelector(".notificacion");
+        if (oldNotif) oldNotif.remove();
+        
+        const div = document.createElement("div");
+        div.className = `notificacion ${tipo}`;
+        div.textContent = mensaje;
+        document.body.appendChild(div);
+        
+        setTimeout(() => {
+          div.remove();
+        }, 4000);
+      }
+    </script>
+  </body>
+</html>

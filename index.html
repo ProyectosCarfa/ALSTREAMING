@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="theme-color" content="#040404" />
+    <title>ALSTREAMING | Inicio</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/Alex/frontend/src/css/style.css" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+  </head>
+  <body>
+    <img
+      src="/Alex/frontend/assets/fondo/fondoInicio.png"
+      alt=""
+      class="fondoInicio"
+    />
+    <header class="module-header">
+      <a href="/index.html"
+        ><img
+          src="/Alex/frontend/assets/logo/logoAlex.png"
+          alt="ALSTREAMING"
+          class="logo" /><img
+          src="/Alex/frontend/assets/logo/logoEscrito.png"
+          alt="ALSTREAMING"
+          class="logoEscrito"
+      /></a>
+      <div class="animation-corazon">
+        <svg viewBox="0 0 800 300" class="grafico_svg">
+          <path
+            class="linea_viva"
+            d="M0,150 L230,150 L245,120 L260,180 L275,150 L330,150 L365,240 C250,180 300,80 365,130 C430,80 480,180 365,240 L400,150 L455,150 L470,120 L485,180 L500,150 L800,150"
+          ></path>
+        </svg>
+      </div>
+      <nav>
+        <a href="/index.html"><i class="fa-solid fa-house"></i> Inicio</a>
+        <a href="/Alex/frontend/pages/productos.html"><i class="fa-solid fa-box-open"></i> Productos</a>
+        <a href="#comunidad"><i class="fa-solid fa-users"></i> Comunidad</a>
+        <!-- 
+          =============================================
+          CONTENEDOR DINÁMICO DE SESIÓN (JS LO GESTIONA)
+          =============================================
+          - Si NO hay sesión: mostrará "Iniciar sesión"
+          - Si SÍ hay sesión: mostrará el nombre del usuario y un dropdown con "Mi cuenta", "Panel Admin" (si es admin), "Cerrar sesión"
+          El id "auth-container" es el punto de montaje. Tu script debe detectar este elemento y renderizar el HTML correcto.
+        -->
+        <div id="auth-container" class="auth-container">
+          <!-- El script de autenticación rellena esto dinámicamente -->
+          <a href="/Alex/frontend/pages/login.html">
+            <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión
+          </a>
+        </div>
+      </nav>
+      <button id="btnmenu" type="button" class="menuToggle" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+    <main>
+      <section class="inicio-welcome">
+        <img
+          src="/Alex/frontend/assets/banners/banners/banner-spider-inicio.jpg"
+          alt="Ofertas ALSTREAMING"
+          class="fondobanner"
+        />
+        <p>Bienvenido a ALSTREAMING</p>
+        <h1>Entérate por qué somos los mejores en el mundo del Streaming</h1>
+        <!-- 
+          =============================================
+          BOTÓN DE OFERTAS: CAMBIA SEGÚN EL ESTADO DE SESIÓN
+          =============================================
+          Tu script debe modificar el texto, href y comportamiento de este botón:
+          - Usuario NO logueado: Texto "Bloqueado - Inicia sesión", href="login.html", clase 'btn-disabled'
+          - Usuario logueado (cliente): Texto "Ver ofertas del día", href correcto, funcional
+        -->
+        <a id="btn-banner" href="/Alex/frontend/pages/productos.html" class="btn-banner">
+          <i class="fa-solid fa-tags"></i> Ver ofertas del día de hoy
+        </a>
+      </section>
+      <div class="modulo-banner"><span id="banner" class="banners"></span></div>
+      <section class="container-productos">
+        <div class="header-productosDestacados">
+          <h3>PRODUCTOS DESTACADOS</h3>
+          <a href="/Alex/frontend/pages/productos.html">Ver catálogo completo</a>
+        </div>
+        <div class="container-productos-destactados">
+          <!-- 
+            =============================================
+            PRODUCTOS DESTACADOS (GESTIONADOS POR products.js)
+            =============================================
+            Tu script de productos generará las tarjetas aquí.
+            CADA BOTÓN DE COMPRA debe también respetar la sesión:
+            - Si NO está logueado: Botón deshabilitado con el texto "Inicia sesión para comprar" y redirige al login.
+            - Si está logueado: Botón funcional de compra.
+          -->
+          <div id="products-destacados" class="products-destacados"></div>
+        </div>
+      </section>
+      <section class="container-comentarios">
+        <div class="animation-barra"></div>
+        <div class="header-opiniones">
+          <h2>💬 Comentarios</h2>
+          <p>Opiniones reales de compradores recientes</p>
+          <div class="banner-opiniones">
+            <!-- 
+              =============================================
+              BOTÓN "COMIENZA HOY": SOLO VISIBLE SI NO HAY SESIÓN
+              =============================================
+              - Si NO hay sesión: Se muestra el enlace a registro.
+              - Si SÍ hay sesión: Este elemento se oculta completamente (display: none) mediante JS.
+            -->
+            <a id="btn-comienza-hoy" class="btn-comienzaHoy" href="/Alex/frontend/pages/register.html">
+              ¡Comienza hoy mismo!
+            </a>
+          </div>
+        </div>
+        <div class="container-opinions">
+          <figure id="fila-opiniones" class="fila-opiniones"></figure>
+          <div class="animation-barra"></div>
+          <figure
+            id="fila-opinionesinferior"
+            class="fila-opinionesinferior"
+          ></figure>
+        </div>
+      </section>
+      <section id="comunidad" class="container-comunidad">
+        <div class="animation-barra"></div>
+        <div class="header-comunidad">
+          <h3>
+            Sé parte de <em style="color: turquoise">nuestra</em> comunidad
+          </h3>
+        </div>
+        <div class="container-principal">
+          <article class="container-enlaces">
+            <div class="comunidad-whatsapp">
+              <div class="imagen-module">
+                <img
+                  src="/Alex/frontend/assets/logo/logos/whatsapp.webp"
+                  alt="WhatsApp"
+                />
+              </div>
+              <h4>Canal de WhatsApp</h4>
+              <p>Ofertas y anuncios</p>
+              <a target="_blank" href="https://wa.me/51987654321">Ingresar</a>
+            </div>
+          </article>
+          <article class="container-enlaces">
+            <div class="comunidad-whatsapp">
+              <div class="imagen-module">
+                <img
+                  src="/Alex/frontend/assets/logo/logos/soporte-whatsapp.png"
+                  alt="Soporte"
+                />
+              </div>
+              <h4>Soporte WhatsApp</h4>
+              <p>Atención directa por chat</p>
+              <a target="_blank" href="https://wa.me/51987654321">Contactar</a>
+            </div>
+          </article>
+          <article class="container-enlaces">
+            <div class="comunidad-whatsapp">
+              <div class="imagen-module">
+                <img
+                  src="/Alex/frontend/assets/logo/logos/discord.svg"
+                  alt="Discord"
+                />
+              </div>
+              <h4>Comunidad Discord</h4>
+              <p>Próximamente</p>
+              <span>Muy pronto</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="/Alex/frontend/assets/banners/products.js"></script>
+    <script src="/Alex/frontend/src/js/auth-check.js"></script>
+      <script src="/Alex/frontend/src/js/index-products.js"></script> 
+  </body>
+</html>
