@@ -1,7 +1,7 @@
 /**
  * =====================================================
  * ALSTREAMING ADMIN PANEL
- * CRUD CATEGORIAS + PRODUCTOS COMPLETO
+ * CRUD CATEGORIAS + PRODUCTOS + VENTAS + CLIENTES
  * =====================================================
  */
 
@@ -12,8 +12,75 @@ const API_PRODUCTOS = "/Alex/backend/api/products/index.php";
 const API_CATEGORIAS = "/Alex/backend/api/categories/index.php";
 const UPLOAD_PRODUCTO = "/Alex/backend/api/products/index.php?action=upload";
 
+const API_SALES_ADMIN = "/Alex/backend/api/sales.php";
+const API_CLIENTES = "/Alex/backend/api/clientes.php";
+
 let categorias = [];
 let productos = [];
+let ventasAdminData = [];
+let clientesData = [];
+
+// ============================================================
+// 🔥 UTILIDADES GENERALES (DEBEN IR PRIMERO)
+// ============================================================
+function formatDate(dateString) {
+  if (!dateString) return "N/A";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("es-PE", {
+    year: "numeric",
+    month: "short",
+    day: "numeric"
+  });
+}
+
+function formatDateTime(dateString) {
+  if (!dateString) return "Nunca";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("es-PE", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+function imagenURL(img) {
+  if (!img) {
+    return "https://via.placeholder.com/80";
+  }
+  if (img.startsWith("http")) {
+    return img;
+  }
+  if (img.startsWith("/")) {
+    return img;
+  }
+  return "/Alex/" + img;
+}
+
+function getStatusTextAdmin(status) {
+  switch (status) {
+    case "available": return "Disponible";
+    case "support": return "En Soporte";
+    case "renewal": return "Renovación";
+    case "expired": return "Expirado";
+    default: return status || "Disponible";
+  }
+}
+
+// ============================================================
+// FETCH SEGURO JSON
+// ============================================================
+async function fetchJSON(url, options = {}) {
+  const response = await fetch(url, options);
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    console.error("Respuesta PHP inválida:", text);
+    throw error;
+  }
+}
 
 // ============================================================
 // ELEMENTOS CATEGORIAS
@@ -40,20 +107,6 @@ const archivoProducto = document.getElementById("archivoProducto");
 const previewProducto = document.getElementById("previewProducto");
 
 // ============================================================
-// FETCH SEGURO JSON
-// ============================================================
-async function fetchJSON(url, options = {}) {
-  const response = await fetch(url, options);
-  const text = await response.text();
-  try {
-    return JSON.parse(text);
-  } catch (error) {
-    console.error("Respuesta PHP inválida:", text);
-    throw error;
-  }
-}
-
-// ============================================================
 // INICIO
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
@@ -61,22 +114,148 @@ document.addEventListener("DOMContentLoaded", () => {
   cargarProductos();
   cargarCategoriasProducto();
   eventosProducto();
+  configurarEventosVentas();
+  configurarEventosClientes();
 });
 
 // ============================================================
-// NORMALIZAR IMAGEN
+// CONFIGURAR EVENTOS DE SECCIONES
 // ============================================================
-function imagenURL(img) {
-  if (!img) {
-    return "https://via.placeholder.com/80";
-  }
-  if (img.startsWith("http")) {
-    return img;
-  }
-  if (img.startsWith("/")) {
-    return img;
-  }
-  return "/Alex/" + img;
+function configurarEventosVentas() {
+  document.querySelector('.menu a[data-section="ventas"]')?.addEventListener("click", () => {
+    cargarVentasAdmin();
+  });
+  
+  document.getElementById("formEditarVenta")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const ticket = document.getElementById("ventaTicketId").value;
+    
+    const data = {
+      ticket: ticket,
+      email: document.getElementById("ventaEmail").value,
+      password: document.getElementById("ventaPassword").value,
+      pin: document.getElementById("ventaPin").value,
+      profile: document.getElementById("ventaPerfil").value,
+      start_date: document.getElementById("ventaStartDate").value,
+      end_date: document.getElementById("ventaEndDate").value,
+      customer_name: document.getElementById("ventaCustomerName").value,
+      customer_whatsapp: document.getElementById("ventaWhatsapp").value,
+      notes: document.getElementById("ventaNotas").value,
+      status: document.getElementById("ventaStatus").value
+    };
+    
+    try {
+      const json = await fetchJSON(`${API_SALES_ADMIN}?action=update`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      
+      if (json.success) {
+        alert("✅ Venta actualizada correctamente");
+        document.getElementById("modalEditarVenta").style.display = "none";
+        cargarVentasAdmin();
+      } else {
+        alert("❌ Error: " + json.message);
+      }
+    } catch (error) {
+      console.error("Error actualizando venta:", error);
+      alert("Error al actualizar la venta");
+    }
+  });
+  
+  document.getElementById("cerrarModalVenta")?.addEventListener("click", () => {
+    document.getElementById("modalEditarVenta").style.display = "none";
+  });
+  
+  document.getElementById("buscarVenta")?.addEventListener("input", () => {
+    const texto = document.getElementById("buscarVenta").value.toLowerCase().trim();
+    
+    if (texto === "") {
+      mostrarVentasAdmin(ventasAdminData);
+      return;
+    }
+    
+    const filtradas = ventasAdminData.filter(v =>
+      v.ticket?.toLowerCase().includes(texto) ||
+      v.customer_name?.toLowerCase().includes(texto) ||
+      v.product_name?.toLowerCase().includes(texto) ||
+      v.email?.toLowerCase().includes(texto)
+    );
+    
+    mostrarVentasAdmin(filtradas);
+  });
+}
+
+function configurarEventosClientes() {
+  document.querySelector('.menu a[data-section="clientes"]')?.addEventListener("click", () => {
+    cargarClientesAdmin();
+  });
+  
+  document.getElementById("formCliente")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const id = document.getElementById("clienteId").value;
+    
+    const data = {
+      id: id,
+      full_name: document.getElementById("clienteFullName").value,
+      email: document.getElementById("clienteEmail").value,
+      phone: document.getElementById("clientePhone").value,
+      address: document.getElementById("clienteAddress").value,
+      role: document.getElementById("clienteRole").value,
+      email_verified: document.getElementById("clienteEmailVerified").value,
+      phone_verified: document.getElementById("clientePhoneVerified").value,
+      status: document.getElementById("clienteStatus").value,
+      notes: document.getElementById("clienteNotes").value
+    };
+    
+    const password = document.getElementById("clientePassword").value;
+    if (password) data.password = password;
+    
+    try {
+      const json = await fetchJSON(`${API_CLIENTES}?action=update`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      
+      if (json.success) {
+        alert("✅ Cliente actualizado correctamente");
+        document.getElementById("modalCliente").style.display = "none";
+        cargarClientesAdmin();
+      } else {
+        alert("❌ Error: " + json.message);
+      }
+    } catch (error) {
+      console.error("Error actualizando cliente:", error);
+      alert("Error al actualizar");
+    }
+  });
+  
+  document.getElementById("cerrarModalCliente")?.addEventListener("click", () => {
+    document.getElementById("modalCliente").style.display = "none";
+  });
+  
+  document.getElementById("buscarCliente")?.addEventListener("input", () => {
+    const texto = document.getElementById("buscarCliente").value.toLowerCase().trim();
+    
+    if (texto === "") {
+      mostrarClientesAdmin(clientesData);
+      return;
+    }
+    
+    const filtradas = clientesData.filter(c =>
+      c.username?.toLowerCase().includes(texto) ||
+      c.email?.toLowerCase().includes(texto) ||
+      c.full_name?.toLowerCase().includes(texto) ||
+      c.phone?.toLowerCase().includes(texto) ||
+      String(c.id).includes(texto)
+    );
+    
+    mostrarClientesAdmin(filtradas);
+  });
 }
 
 // ############################################################
@@ -591,26 +770,9 @@ window.eliminarProducto = async function(id) {
   }
 };
 
-// ============================================================
-// CERRAR MODALES CON ESC
-// ============================================================
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    if (modal) modal.style.display = "none";
-    if (modalProducto) modalProducto.style.display = "none";
-  }
-});
-// ============================================================
-// 🔥 SECCIÓN VENTAS - GESTIÓN DE TICKETS
-// ============================================================
-
-const API_SALES_ADMIN = "/Alex/backend/api/sales.php";
-let ventasAdminData = [];
-
-// Cargar ventas cuando se hace clic en la sección
-document.querySelector('.menu a[data-section="ventas"]')?.addEventListener("click", () => {
-  cargarVentasAdmin();
-});
+// ############################################################
+// #                    VENTAS                                #
+// ############################################################
 
 // ============================================================
 // CARGAR VENTAS
@@ -622,7 +784,7 @@ async function cargarVentasAdmin() {
   tabla.innerHTML = `
     <tr>
       <td colspan="13">
-        <div style="text-align: center; padding: 40px; color: #666;">
+        <div style="text-align: center; color: #666;">
           <i class="fa-solid fa-spinner fa-spin"></i> Cargando ventas...
         </div>
       </td>
@@ -676,7 +838,7 @@ function mostrarVentasAdmin(ventas) {
       <td><strong style="color: #667eea;">#${v.ticket}</strong></td>
       <td>${v.customer_name || v.customer_username || 'N/A'}</td>
       <td>${v.product_name || 'N/A'}</td>
-      <td style="color: #00b09b; font-weight: 600;">S/. ${v.product_price || v.normal_price || '0.00'}</td>
+      <td>S/. ${v.product_price || v.normal_price || '0.00'}</td>
       <td>${v.customer_whatsapp || '-'}</td>
       <td>${v.email || '-'}</td>
       <td>${v.password ? '••••••' : '-'}</td>
@@ -686,7 +848,7 @@ function mostrarVentasAdmin(ventas) {
       <td>${v.end_date || '-'}</td>
       <td><span class="badge badge-${v.status || 'available'}">${getStatusTextAdmin(v.status)}</span></td>
       <td>
-        <button class="btn-primary" onclick="editarVentaAdmin('${v.ticket}')" style="padding: 6px 12px; font-size: 12px;">
+        <button class="btn-primary" onclick="editarVentaAdmin('${v.ticket}')">
           ✏️ Editar
         </button>
       </td>
@@ -695,13 +857,18 @@ function mostrarVentasAdmin(ventas) {
 }
 
 // ============================================================
-// ACTUALIZAR ESTADÍSTICAS
+// ACTUALIZAR ESTADÍSTICAS VENTAS
 // ============================================================
 function actualizarStatsVentas(ventas) {
-  document.getElementById("totalVentasAdmin").textContent = ventas.length;
-  document.getElementById("totalPendientesAdmin").textContent = ventas.filter(v => v.status === "available").length;
-  document.getElementById("totalSoporteAdmin").textContent = ventas.filter(v => v.status === "support").length;
-  document.getElementById("totalExpiradosAdmin").textContent = ventas.filter(v => v.status === "expired").length;
+  const elTotal = document.getElementById("totalVentasAdmin");
+  const elPend = document.getElementById("totalPendientesAdmin");
+  const elSop = document.getElementById("totalSoporteAdmin");
+  const elExp = document.getElementById("totalExpiradosAdmin");
+  
+  if (elTotal) elTotal.textContent = ventas.length;
+  if (elPend) elPend.textContent = ventas.filter(v => v.status === "available").length;
+  if (elSop) elSop.textContent = ventas.filter(v => v.status === "support").length;
+  if (elExp) elExp.textContent = ventas.filter(v => v.status === "expired").length;
 }
 
 // ============================================================
@@ -727,153 +894,202 @@ window.editarVentaAdmin = function(ticket) {
   document.getElementById("modalEditarVenta").style.display = "flex";
 };
 
+// ############################################################
+// #                    CLIENTES                              #
+// ############################################################
+
 // ============================================================
-// GUARDAR CAMBIOS DE VENTA
+// CARGAR CLIENTES
 // ============================================================
-document.getElementById("formEditarVenta")?.addEventListener("submit", async (e) => {
-  e.preventDefault();
+async function cargarClientesAdmin() {
+  const tabla = document.getElementById("tablaClientesAdmin");
+  if (!tabla) return;
   
-  const ticket = document.getElementById("ventaTicketId").value;
-  
-  const data = {
-    ticket: ticket,
-    email: document.getElementById("ventaEmail").value,
-    password: document.getElementById("ventaPassword").value,
-    pin: document.getElementById("ventaPin").value,
-    profile: document.getElementById("ventaPerfil").value,
-    start_date: document.getElementById("ventaStartDate").value,
-    end_date: document.getElementById("ventaEndDate").value,
-    customer_name: document.getElementById("ventaCustomerName").value,
-    customer_whatsapp: document.getElementById("ventaWhatsapp").value,
-    notes: document.getElementById("ventaNotas").value,
-    status: document.getElementById("ventaStatus").value
-  };
+  tabla.innerHTML = `
+    <tr>
+      <td colspan="12">
+        <div>
+          <i class="fa-solid fa-spinner fa-spin"></i> Cargando clientes...
+        </div>
+      </td>
+    </tr>
+  `;
   
   try {
-    const json = await fetchJSON(`${API_SALES_ADMIN}?action=update`, {
+    const json = await fetchJSON(`${API_CLIENTES}?action=getAll`);
+    
+    if (json.success && json.data) {
+      clientesData = json.data;
+      mostrarClientesAdmin(json.data);
+      actualizarStatsClientes(json.data);
+    }
+  } catch (error) {
+    console.error("Error cargando clientes:", error);
+    tabla.innerHTML = `
+      <tr>
+        <td colspan="12">
+          <div style="text-align: center; padding: 40px; color: #ff4444;">
+            Error al cargar clientes
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+}
+
+// ============================================================
+// MOSTRAR CLIENTES EN TABLA
+// ============================================================
+function mostrarClientesAdmin(clientes) {
+  const tabla = document.getElementById("tablaClientesAdmin");
+  if (!tabla) return;
+  
+  if (clientes.length === 0) {
+    tabla.innerHTML = `
+      <tr>
+        <td colspan="12">
+          <div style="text-align: center; padding: 40px; color: #666;">
+            <i class="fa-solid fa-users" style="font-size: 40px; display: block; margin-bottom: 10px; opacity: 0.3;"></i>
+            No hay clientes registrados
+          </div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  tabla.innerHTML = clientes.map(c => `
+    <tr>
+      <td><strong>#${c.id}</strong></td>
+      <td>
+        ${c.avatar 
+          ? `<img src="${imagenURL(c.avatar)}" alt="${c.username}" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #667eea;">`
+          : `<div style="width: 35px; height: 35px; border-radius: 50%; background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">${(c.username || "U").charAt(0).toUpperCase()}</div>`
+        }
+      </td>
+      <td>
+        <strong style="color: #fff;">${c.username || "N/A"}</strong>
+        ${c.full_name ? `<br><small style="color: #888;">${c.full_name}</small>` : ""}
+      </td>
+      <td style="font-size: 12px;">${c.email || "-"}</td>
+      <td>${c.phone || "-"}</td>
+      <td><span class="badge ${c.role === 'admin' ? 'badge-danger' : 'badge-info'}">${c.role === 'admin' ? 'Admin' : 'Cliente'}</span></td>
+      <td style="text-align: center;">
+        ${c.email_verified == 1 
+          ? '<i class="fa-solid fa-circle-check" style="color: #00b09b;"></i>' 
+          : '<i class="fa-solid fa-circle-xmark" style="color: #ff4444;"></i>'}
+      </td>
+      <td style="text-align: center;">
+        ${c.phone_verified == 1 
+          ? '<i class="fa-solid fa-circle-check" style="color: #00b09b;"></i>' 
+          : '<i class="fa-solid fa-circle-xmark" style="color: #ff4444;"></i>'}
+      </td>
+      <td style="font-size: 12px;">${c.last_login ? formatDateTime(c.last_login) : "Nunca"}</td>
+      <td style="font-size: 12px;">${formatDate(c.created_at)}</td>
+      <td>
+        <span class="badge ${c.status === 'active' ? 'badge-available' : 'badge-expired'}">
+          ${c.status === 'active' ? 'Activo' : c.status === 'inactive' ? 'Inactivo' : 'Baneado'}
+        </span>
+      </td>
+      <td>
+        <div style="display: flex; gap: 5px;">
+          <button class="btn-primary" onclick="verClienteAdmin(${c.id})" style="padding: 6px 12px; font-size: 12px;">
+            ✏️ Editar
+          </button>
+          <button class="btn-danger" onclick="toggleStatusCliente(${c.id}, '${c.status}')" style="padding: 6px 12px; font-size: 12px;">
+            ${c.status === 'active' ? '🚫' : '✅'}
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join("");
+}
+
+// ============================================================
+// ACTUALIZAR ESTADÍSTICAS CLIENTES
+// ============================================================
+function actualizarStatsClientes(clientes) {
+  const elTotal = document.getElementById("totalClientesAdmin");
+  const elAct = document.getElementById("totalClientesActivos");
+  const elInact = document.getElementById("totalClientesInactivos");
+  const elAdmin = document.getElementById("totalAdmins");
+  
+  if (elTotal) elTotal.textContent = clientes.length;
+  if (elAct) elAct.textContent = clientes.filter(c => c.status === "active").length;
+  if (elInact) elInact.textContent = clientes.filter(c => c.status !== "active").length;
+  if (elAdmin) elAdmin.textContent = clientes.filter(c => c.role === "admin").length;
+}
+
+// ============================================================
+// VER/EDITAR CLIENTE
+// ============================================================
+window.verClienteAdmin = async function(id) {
+  const cliente = clientesData.find(c => c.id == id);
+  if (!cliente) return;
+  
+  document.getElementById("clienteId").value = cliente.id;
+  document.getElementById("clienteUsername").value = cliente.username || "";
+  document.getElementById("clienteFullName").value = cliente.full_name || "";
+  document.getElementById("clienteEmail").value = cliente.email || "";
+  document.getElementById("clientePhone").value = cliente.phone || "";
+  document.getElementById("clienteAddress").value = cliente.address || "";
+  document.getElementById("clienteRole").value = cliente.role || "customer";
+  document.getElementById("clienteEmailVerified").value = cliente.email_verified || "0";
+  document.getElementById("clientePhoneVerified").value = cliente.phone_verified || "0";
+  document.getElementById("clientePassword").value = "";
+  document.getElementById("clienteStatus").value = cliente.status || "active";
+  document.getElementById("clienteNotes").value = cliente.notes || "";
+  
+  // Info extra
+  document.getElementById("clienteCompras").textContent = cliente.total_compras || 0;
+  document.getElementById("clienteTickets").textContent = cliente.total_tickets || 0;
+  document.getElementById("clienteLastLogin").textContent = cliente.last_login ? formatDateTime(cliente.last_login) : "Nunca";
+  document.getElementById("clienteCreatedAt").textContent = formatDate(cliente.created_at);
+  document.getElementById("clienteInfoExtra").style.display = "block";
+  
+  document.getElementById("tituloModalCliente").textContent = `👤 ${cliente.username || "Cliente"}`;
+  document.getElementById("modalCliente").style.display = "flex";
+};
+
+// ============================================================
+// TOGGLE STATUS CLIENTE (ACTIVAR/DESACTIVAR)
+// ============================================================
+window.toggleStatusCliente = async function(id, statusActual) {
+  const nuevoStatus = statusActual === "active" ? "inactive" : "active";
+  const accion = nuevoStatus === "active" ? "activar" : "desactivar";
+  
+  if (!confirm(`¿Estás seguro de ${accion} este cliente?`)) return;
+  
+  try {
+    const json = await fetchJSON(`${API_CLIENTES}?action=update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      body: JSON.stringify({
+        id: id,
+        status: nuevoStatus
+      })
     });
     
     if (json.success) {
-      alert("✅ Venta actualizada correctamente");
-      document.getElementById("modalEditarVenta").style.display = "none";
-      cargarVentasAdmin();
+      alert(`✅ Cliente ${accion}do correctamente`);
+      cargarClientesAdmin();
     } else {
       alert("❌ Error: " + json.message);
     }
   } catch (error) {
-    console.error("Error actualizando venta:", error);
-    alert("Error al actualizar la venta");
+    console.error("Error cambiando status:", error);
+    alert("Error al cambiar estado");
+  }
+};
+
+// ============================================================
+// CERRAR MODALES CON ESC
+// ============================================================
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    if (modal) modal.style.display = "none";
+    if (modalProducto) modalProducto.style.display = "none";
+    if (document.getElementById("modalEditarVenta")) document.getElementById("modalEditarVenta").style.display = "none";
+    if (document.getElementById("modalCliente")) document.getElementById("modalCliente").style.display = "none";
   }
 });
-
-// ============================================================
-// CERRAR MODAL VENTA
-// ============================================================
-document.getElementById("cerrarModalVenta")?.addEventListener("click", () => {
-  document.getElementById("modalEditarVenta").style.display = "none";
-});
-
-// ============================================================
-// BUSCADOR DE VENTAS
-// ============================================================
-document.getElementById("buscarVenta")?.addEventListener("input", () => {
-  const texto = document.getElementById("buscarVenta").value.toLowerCase().trim();
-  
-  if (texto === "") {
-    mostrarVentasAdmin(ventasAdminData);
-    return;
-  }
-  
-  const filtradas = ventasAdminData.filter(v =>
-    v.ticket?.toLowerCase().includes(texto) ||
-    v.customer_name?.toLowerCase().includes(texto) ||
-    v.product_name?.toLowerCase().includes(texto) ||
-    v.email?.toLowerCase().includes(texto)
-  );
-  
-  mostrarVentasAdmin(filtradas);
-});
-
-// ============================================================
-// AGREGAR CASE "update" EN sales.php (NECESARIO)
-// ============================================================
-// En tu archivo /Alex/backend/api/sales.php agrega este case:
-/*
-case "update":
-    $data = json_decode(file_get_contents("php://input"), true);
-    
-    if (!isset($data["ticket"])) {
-        echo json_encode([
-            "success" => false,
-            "message" => "Ticket no proporcionado"
-        ]);
-        break;
-    }
-    
-    echo json_encode(updateSale($pdo, $data));
-    break;
-*/
-
-// Y agrega esta función en sales.php:
-/*
-function updateSale(PDO $pdo, array $data): array
-{
-    try {
-        $sql = "
-            UPDATE sales SET
-                email = :email,
-                password = :password,
-                pin = :pin,
-                profile = :profile,
-                start_date = :start_date,
-                end_date = :end_date,
-                customer_name = :customer_name,
-                customer_whatsapp = :customer_whatsapp,
-                status = :status,
-                notes = :notes
-            WHERE ticket = :ticket
-        ";
-        
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            ":email" => $data["email"] ?? null,
-            ":password" => $data["password"] ?? null,
-            ":pin" => $data["pin"] ?? null,
-            ":profile" => $data["profile"] ?? null,
-            ":start_date" => $data["start_date"] ?? null,
-            ":end_date" => $data["end_date"] ?? null,
-            ":customer_name" => $data["customer_name"] ?? null,
-            ":customer_whatsapp" => $data["customer_whatsapp"] ?? null,
-            ":status" => $data["status"] ?? "available",
-            ":notes" => $data["notes"] ?? null,
-            ":ticket" => $data["ticket"]
-        ]);
-        
-        return [
-            "success" => true,
-            "message" => "Venta actualizada correctamente"
-        ];
-    } catch (PDOException $e) {
-        return [
-            "success" => false,
-            "message" => "Error: " . $e->getMessage()
-        ];
-    }
-}
-*/
-
-// ============================================================
-// UTILIDADES
-// ============================================================
-function getStatusTextAdmin(status) {
-  switch (status) {
-    case "available": return "Disponible";
-    case "support": return "En Soporte";
-    case "renewal": return "Renovación";
-    case "expired": return "Expirado";
-    default: return status || "Disponible";
-  }
-}

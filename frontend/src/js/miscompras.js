@@ -4,14 +4,16 @@
  * Panel de usuario: Compras, Soporte, Noticias
  * SOLO CARGA DE BASE DE DATOS - TODOS LOS CAMPOS VISIBLES
  * BOTÓN VER/OCULTAR CONTRASEÑA + MODAL WHATSAPP PERSONALIZADO
+ * VERIFICACIÓN DE STOCK AL COMPRAR
  * ============================================================
  */
 
 const API_SALES = "/Alex/backend/api/sales.php";
 const API_SUPPORT = "/Alex/backend/api/support.php";
+const API_PRODUCTOS = "/Alex/backend/api/products/index.php";
 
 let comprasData = [];
-let passwordVisible = {}; // Track de contraseñas visibles
+let passwordVisible = {};
 
 // ============================================================
 // INICIO
@@ -83,6 +85,20 @@ function imagenURL(img) {
 }
 
 // ============================================================
+// FETCH SEGURO JSON
+// ============================================================
+async function fetchJSON(url, options = {}) {
+  try {
+    const response = await fetch(url, options);
+    const text = await response.text();
+    return JSON.parse(text);
+  } catch (error) {
+    console.error("Error fetch:", error);
+    return { success: false, message: "Error de conexión" };
+  }
+}
+
+// ============================================================
 // CARGAR COMPRAS - SOLO DE BASE DE DATOS
 // ============================================================
 async function cargarCompras() {
@@ -130,7 +146,6 @@ async function cargarCompras() {
       return;
     }
     
-    // Inicializar estado de contraseñas
     comprasData.forEach(c => {
       passwordVisible[c.ticket] = false;
     });
@@ -192,7 +207,7 @@ async function cargarCompras() {
 }
 
 // ============================================================
-// 🔥 TOGGLE CONTRASEÑA EN TABLA
+// TOGGLE CONTRASEÑA EN TABLA
 // ============================================================
 window.togglePasswordTabla = function(ticket) {
   const compra = comprasData.find(c => c.ticket === ticket);
@@ -213,7 +228,7 @@ window.togglePasswordTabla = function(ticket) {
 };
 
 // ============================================================
-// 🔥 CREAR MODAL WHATSAPP PERSONALIZADO
+// CREAR MODAL WHATSAPP PERSONALIZADO
 // ============================================================
 function crearModalWhatsApp() {
   if (document.getElementById("modal-whatsapp-envio")) return;
@@ -289,7 +304,7 @@ function crearModalWhatsApp() {
 }
 
 // ============================================================
-// 🔥 ABRIR MODAL WHATSAPP
+// ABRIR MODAL WHATSAPP
 // ============================================================
 window.abrirModalWhatsApp = function(ticket) {
   const compra = comprasData.find(c => c.ticket === ticket);
@@ -300,7 +315,6 @@ window.abrirModalWhatsApp = function(ticket) {
   document.getElementById("whatsappNumero").value = "";
   document.getElementById("whatsappMensaje").value = "";
   
-  // Mostrar preview de datos
   const preview = document.getElementById("whatsappPreview");
   preview.innerHTML = `
     <strong>Ticket:</strong> #${compra.ticket}<br>
@@ -318,14 +332,14 @@ window.abrirModalWhatsApp = function(ticket) {
 };
 
 // ============================================================
-// 🔥 CERRAR MODAL WHATSAPP
+// CERRAR MODAL WHATSAPP
 // ============================================================
 window.cerrarModalWhatsApp = function() {
   document.getElementById("modal-whatsapp-envio").style.display = "none";
 };
 
 // ============================================================
-// 🔥 ENVIAR WHATSAPP PERSONALIZADO
+// ENVIAR WHATSAPP PERSONALIZADO
 // ============================================================
 window.enviarWhatsAppPersonalizado = function() {
   const ticket = document.getElementById("whatsappTicket").value;
@@ -342,10 +356,8 @@ window.enviarWhatsAppPersonalizado = function() {
   const compra = comprasData.find(c => c.ticket === ticket);
   if (!compra) return;
   
-  // Limpiar número (quitar espacios, +, etc.)
   let numeroLimpio = numero.replace(/\s+/g, "").replace(/^\+/, "").replace(/-/g, "");
   
-  // Construir mensaje
   let mensaje = `🎫 *DATOS DE COMPRA - ALSTREAMING*\n\n`;
   mensaje += `📦 Producto: *${compra.product_name || "N/A"}*\n`;
   mensaje += `💰 Precio: S/. ${compra.product_price || "0.00"}\n`;
@@ -363,10 +375,8 @@ window.enviarWhatsAppPersonalizado = function() {
   
   mensaje += `\n\n✅ ¡Disfruta tu producto!`;
   
-  // Abrir WhatsApp
   window.open(`https://wa.me/${numeroLimpio}?text=${encodeURIComponent(mensaje)}`, "_blank");
   
-  // Cerrar modal
   cerrarModalWhatsApp();
 };
 

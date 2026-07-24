@@ -4,7 +4,7 @@
  * Carga productos destacados (más stock) y opiniones
  * ============================================================
  */
-
+ 
 const API_PRODUCTOS = "/Alex/backend/api/products/index.php";
 const API_REVIEWS = "/Alex/backend/api/reviews.php";
 

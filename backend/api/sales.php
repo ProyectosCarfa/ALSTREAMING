@@ -67,7 +67,7 @@ try {
             break;
 
         // ================================================
-        // 🔥 ACTUALIZAR VENTA (ADMIN LLENA DATOS)
+        // ACTUALIZAR VENTA (ADMIN LLENA DATOS)
         // ================================================
         case "update":
             $data = json_decode(file_get_contents("php://input"), true);
@@ -110,6 +110,7 @@ function createSale(PDO $pdo, array $data): array
             ];
         }
 
+        // Verificar que el ticket no exista
         $checkSql = "SELECT id FROM sales WHERE ticket = :ticket";
         $checkStmt = $pdo->prepare($checkSql);
         $checkStmt->execute([":ticket" => $data["ticket"]]);
@@ -121,7 +122,8 @@ function createSale(PDO $pdo, array $data): array
             ];
         }
 
-        $productSql = "SELECT name, normal_price FROM products WHERE id = :product_id";
+        // 🔥 Obtener producto Y VERIFICAR STOCK
+        $productSql = "SELECT id, name, normal_price, stock FROM products WHERE id = :product_id";
         $productStmt = $pdo->prepare($productSql);
         $productStmt->execute([":product_id" => $data["product_id"]]);
         $product = $productStmt->fetch(PDO::FETCH_ASSOC);
@@ -133,6 +135,15 @@ function createSale(PDO $pdo, array $data): array
             ];
         }
 
+        // 🔥 VERIFICAR QUE HAY STOCK DISPONIBLE
+        if ($product["stock"] <= 0) {
+            return [
+                "success" => false,
+                "message" => "Producto agotado. No hay stock disponible."
+            ];
+        }
+
+        // Insertar venta
         $sql = "
             INSERT INTO sales (
                 ticket,
@@ -182,16 +193,22 @@ function createSale(PDO $pdo, array $data): array
             ":notes" => $data["notes"] ?? "Compra de producto: " . $product["name"]
         ]);
 
-        $updateSql = "UPDATE products SET sales = sales + 1 WHERE id = :product_id";
+        // 🔥 ACTUALIZAR CONTADOR DE VENTAS +1 Y REDUCIR STOCK -1
+        $updateSql = "UPDATE products SET sales = sales + 1, stock = stock - 1 WHERE id = :product_id AND stock > 0";
         $updateStmt = $pdo->prepare($updateSql);
         $updateStmt->execute([":product_id" => $data["product_id"]]);
+
+        // Calcular stock restante
+        $stockRestante = $product["stock"] - 1;
 
         return [
             "success" => true,
             "message" => "Venta registrada correctamente",
             "ticket" => $data["ticket"],
             "product_name" => $product["name"],
-            "price" => $product["normal_price"]
+            "price" => $product["normal_price"],
+            "stock_anterior" => $product["stock"],
+            "stock_restante" => $stockRestante
         ];
     } catch (PDOException $e) {
         return [
@@ -303,7 +320,7 @@ function confirmSale(PDO $pdo, string $ticket): array
 }
 
 // ============================================================
-// 🔥 FUNCIÓN: ACTUALIZAR VENTA (ADMIN LLENA DATOS)
+// FUNCIÓN: ACTUALIZAR VENTA (ADMIN LLENA DATOS)
 // ============================================================
 function updateSale(PDO $pdo, array $data): array
 {

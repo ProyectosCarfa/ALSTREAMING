@@ -270,3 +270,41 @@ function deleteProduct(PDO $pdo, int $id): array
         ];
     }
 }
+
+// ============================================================
+// ACTUALIZAR STOCK DEL PRODUCTO (DESPUÉS DE COMPRA)
+// ============================================================
+function updateStock(PDO $pdo, int $id, int $stock): array
+{
+    try {
+        // Verificar que el producto existe
+        $checkSql = "SELECT id, name FROM products WHERE id = :id";
+        $checkStmt = $pdo->prepare($checkSql);
+        $checkStmt->execute([":id" => $id]);
+        
+        if (!$checkStmt->fetch()) {
+            return [
+                "success" => false,
+                "message" => "Producto no encontrado"
+            ];
+        }
+
+        $sql = "UPDATE products SET stock = :stock WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ":stock" => $stock,
+            ":id" => $id
+        ]);
+
+        return [
+            "success" => true,
+            "message" => "Stock actualizado correctamente",
+            "new_stock" => $stock
+        ];
+    } catch (PDOException $e) {
+        return [
+            "success" => false,
+            "message" => "Error: " . $e->getMessage()
+        ];
+    }
+}

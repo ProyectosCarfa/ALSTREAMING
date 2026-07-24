@@ -11,10 +11,12 @@
       <!-- ===================== SIDEBAR ===================== -->
       <aside class="sidebar">
         <div class="logo-admin">
-          <img
-            src="/Alex/frontend/assets/logo/logoEscrito.png"
-            alt="AlStreaming"
-          />
+          <a href="/Alex/index.html">
+            <img
+              src="/Alex/frontend/assets/logo/logoEscrito.png"
+              alt="AlStreaming"
+            />
+          </a>
           <span> Panel Administrativo</span>
         </div>
 
@@ -181,84 +183,121 @@
               <strong>0</strong>
             </div>
           </div>
-          <div style="padding: 1.5rem 0; color: #666">
+          <div class="welcome">
             Bienvenido al panel de administración. Selecciona una opción del
             menú.
           </div>
         </section>
 
         <!-- ======= SECCIÓN CLIENTES ======= -->
-        <section id="clientes" class="section-content" style="display: none">
+        <section id="clientes" class="section-content">
           <header class="top-header">
             <div>
-              <h1>Clientes</h1>
-              <p>Gestión de usuarios registrados</p>
+              <h1>Gestión de Clientes</h1>
+              <p>Administra todos los usuarios registrados en la plataforma</p>
+            </div>
+            <div class="search-cliente">
+              <input
+                type="text"
+                id="buscarCliente"
+                placeholder="🔍 Buscar cliente..."
+              />
+              <button class="btn-nuevo-producto" id="btnExportarClientes">
+                📥 Exportar
+              </button>
             </div>
           </header>
-          <div style="padding: 2rem 0; color: #666">
-            Aquí se mostrará la lista de clientes.
+
+          <div class="stats">
+            <div class="stat-card">
+              <h3>Total Clientes</h3>
+              <strong id="totalClientesAdmin">0</strong>
+            </div>
+            <div class="stat-card">
+              <h3>Activos</h3>
+              <strong id="totalClientesActivos" class="text-success">0</strong>
+            </div>
+            <div class="stat-card">
+              <h3>Inactivos</h3>
+              <strong id="totalClientesInactivos" class="text-danger">0</strong>
+            </div>
+            <div class="stat-card">
+              <h3>Admins</h3>
+              <strong id="totalAdmins" class="text-info">0</strong>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Avatar</th>
+                    <th>Usuario</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Rol</th>
+                    <th>Email Verif.</th>
+                    <th>Tel. Verif.</th>
+                    <th>Último Login</th>
+                    <th>Registro</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaClientesAdmin">
+                  <tr>
+                    <td colspan="12">
+                      <div class="empty-state">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Cargando
+                        clientes...
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
 
         <!-- ======= SECCIÓN VENTAS ======= -->
-        <!-- ======= SECCIÓN VENTAS ======= -->
-        <section id="ventas" class="section-content" style="display: none">
-          <header class="top-header">
+        <section id="ventas" class="section-content-ventas">
+          <header class="top-header-ventas">
             <div>
               <h1>Ventas y Tickets</h1>
               <p>Gestión de compras, tickets y asignación de cuentas</p>
             </div>
-            <div style="display: flex; gap: 10px">
+            <div>
               <input
                 type="text"
                 id="buscarVenta"
                 placeholder="🔍 Buscar ticket o cliente..."
-                style="
-                  padding: 10px 15px;
-                  background: rgba(255, 255, 255, 0.05);
-                  border: 1px solid rgba(255, 255, 255, 0.1);
-                  border-radius: 8px;
-                  color: #fff;
-                  font-size: 14px;
-                  width: 250px;
-                "
               />
             </div>
           </header>
 
-          <!-- Estadísticas de ventas -->
-          <div class="stats" style="margin-bottom: 20px">
+          <div class="stats">
             <div class="stat-card">
               <h3>Total Ventas</h3>
               <strong id="totalVentasAdmin">0</strong>
             </div>
             <div class="stat-card">
               <h3>Pendientes</h3>
-              <strong id="totalPendientesAdmin" style="color: #ffbb33"
-                >0</strong
-              >
+              <strong id="totalPendientesAdmin" class="text-warning">0</strong>
             </div>
             <div class="stat-card">
               <h3>En Soporte</h3>
-              <strong id="totalSoporteAdmin" style="color: #667eea">0</strong>
+              <strong id="totalSoporteAdmin" class="text-info">0</strong>
             </div>
             <div class="stat-card">
               <h3>Expirados</h3>
-              <strong id="totalExpiradosAdmin" style="color: #ff4444">0</strong>
+              <strong id="totalExpiradosAdmin" class="text-danger">0</strong>
             </div>
           </div>
 
-          <!-- Tabla de ventas -->
-          <div
-            class="table-container"
-            style="
-              background: rgba(255, 255, 255, 0.02);
-              border: 1px solid rgba(255, 255, 255, 0.08);
-              border-radius: 15px;
-              overflow: hidden;
-            "
-          >
-            <div style="overflow-x: auto">
+          <div class="table-container">
+            <div class="table-scroll-ventas">
               <table>
                 <thead>
                   <tr>
@@ -280,9 +319,7 @@
                 <tbody id="tablaVentasAdmin">
                   <tr>
                     <td colspan="13">
-                      <div
-                        style="text-align: center; padding: 40px; color: #666"
-                      >
+                      <div class="empty-state">
                         <i class="fa-solid fa-spinner fa-spin"></i> Cargando
                         ventas...
                       </div>
@@ -294,250 +331,30 @@
           </div>
         </section>
 
-        <!-- ======= MODAL EDITAR VENTA (ADMIN LLENA DATOS) ======= -->
-        <div class="modal-producto" id="modalEditarVenta" style="display: none">
-          <div class="modal-content" style="max-width: 700px">
-            <h2 id="tituloModalVenta">🎫 Gestionar Ticket</h2>
-            <form id="formEditarVenta">
-              <input type="hidden" id="ventaTicketId" />
-
-              <div
-                style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px"
-              >
-                <!-- Columna 1 -->
-                <div>
-                  <label>📧 Correo / Email</label>
-                  <input
-                    type="email"
-                    id="ventaEmail"
-                    placeholder="correo@ejemplo.com"
-                    style="
-                      width: 100%;
-                      padding: 10px;
-                      background: rgba(255, 255, 255, 0.05);
-                      border: 1px solid rgba(255, 255, 255, 0.1);
-                      border-radius: 8px;
-                      color: #fff;
-                      font-size: 14px;
-                    "
-                  />
-                </div>
-
-                <div>
-                  <label>🔐 Contraseña</label>
-                  <input
-                    type="text"
-                    id="ventaPassword"
-                    placeholder="Contraseña de la cuenta"
-                    style="
-                      width: 100%;
-                      padding: 10px;
-                      background: rgba(255, 255, 255, 0.05);
-                      border: 1px solid rgba(255, 255, 255, 0.1);
-                      border-radius: 8px;
-                      color: #fff;
-                      font-size: 14px;
-                    "
-                  />
-                </div>
-
-                <div>
-                  <label>🔢 PIN</label>
-                  <input
-                    type="text"
-                    id="ventaPin"
-                    placeholder="PIN de 4 dígitos"
-                    maxlength="4"
-                    style="
-                      width: 100%;
-                      padding: 10px;
-                      background: rgba(255, 255, 255, 0.05);
-                      border: 1px solid rgba(255, 255, 255, 0.1);
-                      border-radius: 8px;
-                      color: #fff;
-                      font-size: 14px;
-                    "
-                  />
-                </div>
-
-                <div>
-                  <label>👤 Perfil</label>
-                  <input
-                    type="text"
-                    id="ventaPerfil"
-                    placeholder="Nombre del perfil"
-                    style="
-                      width: 100%;
-                      padding: 10px;
-                      background: rgba(255, 255, 255, 0.05);
-                      border: 1px solid rgba(255, 255, 255, 0.1);
-                      border-radius: 8px;
-                      color: #fff;
-                      font-size: 14px;
-                    "
-                  />
-                </div>
-
-                <div>
-                  <label>📅 Fecha de Inicio</label>
-                  <input
-                    type="date"
-                    id="ventaStartDate"
-                    style="
-                      width: 100%;
-                      padding: 10px;
-                      background: rgba(255, 255, 255, 0.05);
-                      border: 1px solid rgba(255, 255, 255, 0.1);
-                      border-radius: 8px;
-                      color: #fff;
-                      font-size: 14px;
-                    "
-                  />
-                </div>
-
-                <div>
-                  <label>📅 Fecha de Fin</label>
-                  <input
-                    type="date"
-                    id="ventaEndDate"
-                    style="
-                      width: 100%;
-                      padding: 10px;
-                      background: rgba(255, 255, 255, 0.05);
-                      border: 1px solid rgba(255, 255, 255, 0.1);
-                      border-radius: 8px;
-                      color: #fff;
-                      font-size: 14px;
-                    "
-                  />
-                </div>
-
-                <div>
-                  <label>👤 Nombre del Cliente</label>
-                  <input
-                    type="text"
-                    id="ventaCustomerName"
-                    placeholder="Nombre completo"
-                    style="
-                      width: 100%;
-                      padding: 10px;
-                      background: rgba(255, 255, 255, 0.05);
-                      border: 1px solid rgba(255, 255, 255, 0.1);
-                      border-radius: 8px;
-                      color: #fff;
-                      font-size: 14px;
-                    "
-                  />
-                </div>
-
-                <div>
-                  <label>📱 WhatsApp</label>
-                  <input
-                    type="text"
-                    id="ventaWhatsapp"
-                    placeholder="+51 999 888 777"
-                    style="
-                      width: 100%;
-                      padding: 10px;
-                      background: rgba(255, 255, 255, 0.05);
-                      border: 1px solid rgba(255, 255, 255, 0.1);
-                      border-radius: 8px;
-                      color: #fff;
-                      font-size: 14px;
-                    "
-                  />
-                </div>
-              </div>
-
-              <div style="margin-top: 15px">
-                <label>📝 Notas</label>
-                <textarea
-                  id="ventaNotas"
-                  rows="3"
-                  placeholder="Notas adicionales..."
-                  style="
-                    width: 100%;
-                    padding: 10px;
-                    background: rgba(255, 255, 255, 0.05);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 8px;
-                    color: #fff;
-                    font-size: 14px;
-                    font-family: &quot;Inter&quot;, sans-serif;
-                  "
-                ></textarea>
-              </div>
-
-              <div style="margin-top: 15px">
-                <label>📊 Estado</label>
-                <select
-                  id="ventaStatus"
-                  style="
-                    width: 100%;
-                    padding: 10px;
-                    background: rgba(255, 255, 255, 0.05);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 8px;
-                    color: #fff;
-                    font-size: 14px;
-                  "
-                >
-                  <option value="available">Disponible</option>
-                  <option value="support">En Soporte</option>
-                  <option value="renewal">Renovación</option>
-                  <option value="expired">Expirado</option>
-                </select>
-              </div>
-
-              <div class="modal-actions" style="margin-top: 20px">
-                <button type="submit" class="btn-primary" style="flex: 1">
-                  💾 Guardar Cambios
-                </button>
-                <button
-                  type="button"
-                  id="cerrarModalVenta"
-                  class="btn-danger"
-                  style="flex: 1"
-                >
-                  Cancelar
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-
         <!-- ======= SECCIÓN CONFIGURACIÓN ======= -->
-        <section
-          id="configuracion"
-          class="section-content"
-          style="display: none"
-        >
+        <section id="configuracion" class="section-content">
           <header class="top-header">
             <div>
               <h1>Configuración</h1>
               <p>Ajustes generales del sistema</p>
             </div>
           </header>
-          <div style="padding: 2rem 0; color: #666">
-            Opciones de configuración disponibles.
-          </div>
+          <div class="welcome">Opciones de configuración disponibles.</div>
         </section>
 
         <!-- ======= SECCIÓN REPORTES ======= -->
-        <section id="reportes" class="section-content" style="display: none">
+        <section id="reportes" class="section-content">
           <header class="top-header">
             <div>
               <h1>Reportes</h1>
               <p>Estadísticas y análisis</p>
             </div>
           </header>
-          <div style="padding: 2rem 0; color: #666">
-            Generación de reportes personalizados.
-          </div>
+          <div class="welcome">Generación de reportes personalizados.</div>
         </section>
 
         <!-- ======= SECCIÓN PRODUCTOS ======= -->
-        <section id="productos" class="section-content" style="display: none">
+        <section id="productos" class="section-content">
           <header class="top-header">
             <div>
               <h1>Gestión de Productos</h1>
@@ -560,14 +377,12 @@
                 <option value="inactive">Inactivos</option>
               </select>
             </div>
-            <div class="tabla-productos" id="tablaProductos">
-              <!-- Aquí JS cargará los productos -->
-            </div>
+            <div class="tabla-productos" id="tablaProductos"></div>
           </div>
         </section>
 
         <!-- ======= SECCIÓN CATEGORÍA ======= -->
-        <section id="categoria" class="section-content" style="display: none">
+        <section id="categoria" class="section-content">
           <header class="top-header">
             <div>
               <h1>Gestión de Categorías</h1>
@@ -582,7 +397,6 @@
             </div>
           </header>
 
-          <!-- TARJETAS RESUMEN -->
           <section class="stats">
             <div class="stat-card">
               <h3>Categorías</h3>
@@ -602,7 +416,6 @@
             </div>
           </section>
 
-          <!-- HERRAMIENTAS -->
           <section class="toolbar">
             <button id="btnNuevaCategoria" class="btn-primary">
               + Nueva Categoría
@@ -614,25 +427,28 @@
             />
           </section>
 
-          <!-- TABLA CATEGORIAS -->
           <section class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Imagen</th>
-                  <th>Nombre</th>
-                  <th>Descripción</th>
-                  <th>Productos</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody id="tablaCategorias">
-                <tr>
-                  <td colspan="6">Cargando categorías...</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Productos</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaCategorias">
+                  <tr>
+                    <td colspan="6">
+                      <div class="empty-state">Cargando categorías...</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </section>
 
           <!-- MODAL CATEGORIA -->
@@ -682,12 +498,12 @@
         </section>
 
         <!-- MODAL PRODUCTO -->
-        <div class="modal-producto" id="modalProducto" style="display: none">
+        <div class="modal-producto" id="modalProducto">
           <div class="modal-content">
             <h2 id="tituloModalProducto">Nuevo Producto</h2>
             <form id="formProducto">
               <input type="hidden" id="productoId" />
-              <label> Categoría </label>
+              <label>Categoría</label>
               <select id="categoriaProducto" required>
                 <option value="">Seleccione categoría</option>
               </select>
@@ -707,46 +523,46 @@
                 id="imagenProducto"
                 placeholder="https://imagen.com/producto.jpg"
               />
-              <label> Nombre del producto </label>
+              <label>Nombre del producto</label>
               <input
                 type="text"
                 id="nombreProducto"
                 placeholder="Nombre producto"
                 required
               />
-              <label> Descripción corta </label>
+              <label>Descripción corta</label>
               <textarea
                 id="descripcionProducto"
                 placeholder="Descripción del producto"
               ></textarea>
-              <label> Detalles </label>
+              <label>Detalles</label>
               <textarea
                 id="detallesProducto"
                 placeholder="Detalles del producto"
               ></textarea>
-              <label> Términos </label>
+              <label>Términos</label>
               <textarea
                 id="terminosProducto"
                 placeholder="Términos y condiciones"
               ></textarea>
-              <label> Stock </label>
+              <label>Stock</label>
               <input type="number" id="stockProducto" value="0" min="0" />
-              <label> Tipo de producto </label>
+              <label>Tipo de producto</label>
               <select id="renovableProducto">
                 <option value="renewable">Renovable</option>
                 <option value="non_renewable">No renovable</option>
               </select>
-              <label> Precio normal </label>
+              <label>Precio normal</label>
               <input type="number" step="0.01" id="precioProducto" required />
-              <label> Precio renovación </label>
+              <label>Precio renovación</label>
               <input type="number" step="0.01" id="precioRenovacion" />
-              <label> Estado stock </label>
+              <label>Estado stock</label>
               <select id="estadoStock">
                 <option value="in_stock">Disponible</option>
                 <option value="on_request">Bajo pedido</option>
                 <option value="activation">Activación</option>
               </select>
-              <label> Activo </label>
+              <label>Activo</label>
               <select id="activoProducto">
                 <option value="1">Activo</option>
                 <option value="0">Inactivo</option>
@@ -766,207 +582,321 @@
             </form>
           </div>
         </div>
+
+        <!-- MODAL CLIENTE -->
+        <div class="modal-producto" id="modalCliente">
+          <div class="modal-content modal-lg">
+            <h2 id="tituloModalCliente">👤 Datos del Cliente</h2>
+            <form id="formCliente">
+              <input type="hidden" id="clienteId" />
+              <div class="cliente-ver">
+                <div>
+                  <label>👤 Nombre de Usuario</label
+                  ><input type="text" id="clienteUsername" disabled />
+                </div>
+                <div>
+                  <label>📝 Nombre Completo</label
+                  ><input
+                    type="text"
+                    id="clienteFullName"
+                    placeholder="Nombre completo"
+                  />
+                </div>
+                <div>
+                  <label>📧 Email</label
+                  ><input
+                    type="email"
+                    id="clienteEmail"
+                    placeholder="correo@ejemplo.com"
+                  />
+                </div>
+                <div>
+                  <label>📱 Teléfono</label
+                  ><input
+                    type="text"
+                    id="clientePhone"
+                    placeholder="+51 999 888 777"
+                  />
+                </div>
+                <div>
+                  <label>🏠 Dirección</label
+                  ><input
+                    type="text"
+                    id="clienteAddress"
+                    placeholder="Dirección"
+                  />
+                </div>
+                <div>
+                  <label>🔄 Rol</label
+                  ><select id="clienteRole">
+                    <option value="customer">Cliente</option>
+                    <option value="admin">Administrador</option>
+                  </select>
+                </div>
+                <div>
+                  <label>📧 Email Verificado</label
+                  ><select id="clienteEmailVerified">
+                    <option value="0">No</option>
+                    <option value="1">Sí</option>
+                  </select>
+                </div>
+                <div>
+                  <label>📱 Teléfono Verificado</label
+                  ><select id="clientePhoneVerified">
+                    <option value="0">No</option>
+                    <option value="1">Sí</option>
+                  </select>
+                </div>
+                <div>
+                  <label>🔒 Nueva Contraseña</label
+                  ><input
+                    type="password"
+                    id="clientePassword"
+                    placeholder="••••••••"
+                  />
+                </div>
+                <div>
+                  <label>📊 Estado</label
+                  ><select id="clienteStatus">
+                    <option value="active">Activo</option>
+                    <option value="inactive">Inactivo</option>
+                    <option value="banned">Baneado</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>📝 Notas</label
+                ><textarea
+                  id="clienteNotes"
+                  rows="3"
+                  placeholder="Notas sobre el cliente..."
+                ></textarea>
+              </div>
+              <div id="clienteInfoExtra" class="info-extra">
+                <h4>📊 Estadísticas del Cliente</h4>
+                <div class="info-grid">
+                  <div>
+                    <span>Compras:</span><strong id="clienteCompras">0</strong>
+                  </div>
+                  <div>
+                    <span>Tickets:</span><strong id="clienteTickets">0</strong>
+                  </div>
+                  <div>
+                    <span>Último Login:</span
+                    ><strong id="clienteLastLogin">-</strong>
+                  </div>
+                  <div>
+                    <span>Registrado:</span
+                    ><strong id="clienteCreatedAt">-</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-actions">
+                <button type="submit" class="btn-primary">
+                  💾 Guardar Cambios
+                </button>
+                <button
+                  type="button"
+                  id="cerrarModalCliente"
+                  class="btn-danger"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- MODAL VENTA -->
+        <div class="modal-producto" id="modalEditarVenta">
+          <div class="modal-content modal-lg">
+            <h2 id="tituloModalVenta">🎫 Gestionar Ticket</h2>
+            <form id="formEditarVenta">
+              <input type="hidden" id="ventaTicketId" />
+              <div class="cliente-ver">
+                <div>
+                  <label>📧 Correo / Email</label
+                  ><input
+                    type="email"
+                    id="ventaEmail"
+                    placeholder="correo@ejemplo.com"
+                  />
+                </div>
+                <div>
+                  <label>🔐 Contraseña</label
+                  ><input
+                    type="text"
+                    id="ventaPassword"
+                    placeholder="Contraseña de la cuenta"
+                  />
+                </div>
+                <div>
+                  <label>🔢 PIN</label
+                  ><input
+                    type="text"
+                    id="ventaPin"
+                    placeholder="PIN de 4 dígitos"
+                    maxlength="4"
+                  />
+                </div>
+                <div>
+                  <label>👤 Perfil</label
+                  ><input
+                    type="text"
+                    id="ventaPerfil"
+                    placeholder="Nombre del perfil"
+                  />
+                </div>
+                <div>
+                  <label>📅 Fecha de Inicio</label
+                  ><input type="date" id="ventaStartDate" />
+                </div>
+                <div>
+                  <label>📅 Fecha de Fin</label
+                  ><input type="date" id="ventaEndDate" />
+                </div>
+                <div>
+                  <label>👤 Nombre del Cliente</label
+                  ><input
+                    type="text"
+                    id="ventaCustomerName"
+                    placeholder="Nombre completo"
+                  />
+                </div>
+                <div>
+                  <label>📱 WhatsApp</label
+                  ><input
+                    type="text"
+                    id="ventaWhatsapp"
+                    placeholder="+51 999 888 777"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>📝 Notas</label
+                ><textarea
+                  id="ventaNotas"
+                  rows="3"
+                  placeholder="Notas adicionales..."
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label>📊 Estado</label>
+                <select id="ventaStatus">
+                  <option value="available">Disponible</option>
+                  <option value="support">En Soporte</option>
+                  <option value="renewal">Renovación</option>
+                  <option value="expired">Expirado</option>
+                </select>
+              </div>
+              <div class="modal-actions">
+                <button type="submit" class="btn-primary">
+                  💾 Guardar Cambios
+                </button>
+                <button type="button" id="cerrarModalVenta" class="btn-danger">
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </main>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- VERIFICACIÓN DE SESIÓN DE ADMINISTRADOR                      -->
-    <!-- ============================================================ -->
     <script>
-      // ============================================================
-      // 🔥 PROTECCIÓN DE RUTA - SOLO ADMIN PUEDE VER ESTA PÁGINA
-      // ============================================================
       (function () {
-        // Verificar sesión inmediatamente
         const sesion = verificarSesionAdmin();
-
         if (!sesion) {
-          // No hay sesión - redirigir al login
-          console.warn("⛔ Acceso denegado: No hay sesión activa");
           window.location.replace("/Alex/frontend/pages/login.html");
           return;
         }
-
         if (sesion.role !== "admin") {
-          // No es admin - redirigir al index
-          console.warn("⛔ Acceso denegado: El usuario no es administrador");
-          alert(
-            "No tienes permisos de administrador. Serás redirigido al inicio.",
-          );
+          alert("No tienes permisos de administrador.");
           window.location.replace("/Alex/index.html");
           return;
         }
-
-        // Es admin - mostrar datos del usuario
-        console.log("✅ Acceso permitido: Administrador", sesion.username);
-
-        // Actualizar datos del admin en la interfaz
         actualizarDatosAdmin(sesion);
-
         function verificarSesionAdmin() {
           try {
-            const sesionData = localStorage.getItem("alstreaming_session");
-
-            if (!sesionData) {
-              console.log("🔍 No se encontró sesión en localStorage");
-              return null;
-            }
-
-            const session = JSON.parse(sesionData);
-
-            // Verificar expiración (24 horas)
-            if (Date.now() > session.expira) {
-              console.warn("⚠️ Sesión expirada");
+            const d = localStorage.getItem("alstreaming_session");
+            if (!d) return null;
+            const s = JSON.parse(d);
+            if (Date.now() > s.expira) {
               localStorage.removeItem("alstreaming_session");
               return null;
             }
-
-            return session;
-          } catch (error) {
-            console.error("❌ Error al verificar sesión:", error);
-            localStorage.removeItem("alstreaming_session");
+            return s;
+          } catch (e) {
             return null;
           }
         }
-
-        function actualizarDatosAdmin(sesion) {
-          // Actualizar nombre y email en la sección Dashboard
-          const adminUsername = document.getElementById("adminUsername");
-          const adminEmail = document.getElementById("adminEmail");
-          const adminAvatar = document.getElementById("adminAvatar");
-
-          if (adminUsername) {
-            adminUsername.textContent = sesion.username || "Administrador";
-          }
-
-          if (adminEmail) {
-            adminEmail.textContent = sesion.email || "admin@alstreaming.com";
-          }
-
-          if (adminAvatar && sesion.username) {
-            adminAvatar.textContent = sesion.username.charAt(0).toUpperCase();
-          }
-
-          // Actualizar en la sección Categorías también
-          const adminUsernameCat = document.getElementById("adminUsernameCat");
-          const adminEmailCat = document.getElementById("adminEmailCat");
-          const adminAvatarCat = document.getElementById("adminAvatarCat");
-
-          if (adminUsernameCat) {
-            adminUsernameCat.textContent = sesion.username || "Administrador";
-          }
-
-          if (adminEmailCat) {
-            adminEmailCat.textContent = sesion.email || "admin@alstreaming.com";
-          }
-
-          if (adminAvatarCat && sesion.username) {
-            adminAvatarCat.textContent = sesion.username
-              .charAt(0)
-              .toUpperCase();
-          }
+        function actualizarDatosAdmin(s) {
+          const u = (id, v) => {
+            const e = document.getElementById(id);
+            if (e) e.textContent = v;
+          };
+          u("adminUsername", s.username || "Administrador");
+          u("adminEmail", s.email || "admin@alstreaming.com");
+          u("adminUsernameCat", s.username || "Administrador");
+          u("adminEmailCat", s.email || "admin@alstreaming.com");
+          const a = document.getElementById("adminAvatar");
+          if (a && s.username)
+            a.textContent = s.username.charAt(0).toUpperCase();
+          const ac = document.getElementById("adminAvatarCat");
+          if (ac && s.username)
+            ac.textContent = s.username.charAt(0).toUpperCase();
         }
       })();
-
-      // ============================================================
-      // FUNCIÓN GLOBAL PARA CERRAR SESIÓN
-      // ============================================================
       function cerrarSesionAdmin() {
-        try {
-          // Confirmar antes de cerrar sesión
-          if (!confirm("¿Estás seguro de que deseas cerrar sesión?")) {
-            return;
-          }
-
-          // Limpiar localStorage
-          localStorage.removeItem("alstreaming_session");
-
-          // Limpiar sessionStorage
-          sessionStorage.clear();
-
-          // Eliminar cookies
-          document.cookie.split(";").forEach(function (cookie) {
-            var eqPos = cookie.indexOf("=");
-            var name =
-              eqPos > -1 ? cookie.substring(0, eqPos).trim() : cookie.trim();
-            document.cookie =
-              name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-          });
-
-          console.log("🔒 Sesión de administrador cerrada correctamente");
-
-          // Redirigir al login con replace para no poder volver atrás
-          window.location.replace("/Alex/frontend/pages/login.html");
-        } catch (error) {
-          console.error("❌ Error al cerrar sesión:", error);
-          // Forzar redirección incluso si hay error
-          window.location.replace("/Alex/frontend/pages/login.html");
-        }
+        if (!confirm("¿Cerrar sesión?")) return;
+        localStorage.removeItem("alstreaming_session");
+        sessionStorage.clear();
+        document.cookie.split(";").forEach((c) => {
+          document.cookie =
+            c.split("=")[0].trim() +
+            "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+        });
+        window.location.replace("/Alex/frontend/pages/login.html");
       }
     </script>
-
     <script src="admin.js"></script>
     <script>
-      // ============================================================
-      //  NAVEGACIÓN ENTRE SECCIONES (sin cambiar IDs de categorías)
-      // ============================================================
       (function () {
-        const menuLinks = document.querySelectorAll(".menu a[data-section]");
-        const sections = {
-          inicio: document.getElementById("inicio"),
-          categoria: document.getElementById("categoria"),
-          productos: document.getElementById("productos"),
-          clientes: document.getElementById("clientes"),
-          ventas: document.getElementById("ventas"),
-          reportes: document.getElementById("reportes"),
-          configuracion: document.getElementById("configuracion"),
-        };
-
-        function showSection(sectionId) {
-          // Ocultar todas
-          Object.keys(sections).forEach((key) => {
-            if (sections[key]) sections[key].style.display = "none";
-          });
-          // Mostrar la seleccionada
-          if (sections[sectionId]) {
-            sections[sectionId].style.display = "block";
-          }
-          // Actualizar clase active en menú
-          menuLinks.forEach((link) => {
-            link.classList.remove("active");
-            if (link.dataset.section === sectionId) {
-              link.classList.add("active");
-            }
-          });
-        }
-
-        // Evento clicks en menú
-        menuLinks.forEach((link) => {
-          link.addEventListener("click", function (e) {
-            e.preventDefault();
-            const sectionId = this.dataset.section;
-            if (sectionId) {
-              showSection(sectionId);
-              // Cambiar hash sin scroll
-              history.pushState(null, "", "#" + sectionId);
-            }
-          });
+        const links = document.querySelectorAll(".menu a[data-section]");
+        const sections = {};
+        [
+          "inicio",
+          "categoria",
+          "productos",
+          "clientes",
+          "ventas",
+          "reportes",
+          "configuracion",
+        ].forEach((id) => {
+          sections[id] = document.getElementById(id);
         });
-
-        // Al cargar la página, mostrar según hash o por defecto 'inicio'
-        const hash = window.location.hash.replace("#", "");
-        if (hash && sections[hash]) {
-          showSection(hash);
-        } else {
-          showSection("inicio");
+        function show(id) {
+          Object.values(sections).forEach((s) => {
+            if (s) s.style.display = "none";
+          });
+          if (sections[id]) sections[id].style.display = "block";
+          links.forEach((l) => {
+            l.classList.remove("active");
+            if (l.dataset.section === id) l.classList.add("active");
+          });
         }
-
-        // Al cambiar hash (botón atrás/adelante)
-        window.addEventListener("hashchange", function () {
-          const h = window.location.hash.replace("#", "");
-          if (h && sections[h]) {
-            showSection(h);
-          }
+        links.forEach((l) =>
+          l.addEventListener("click", (e) => {
+            e.preventDefault();
+            show(l.dataset.section);
+            history.pushState(null, "", "#" + l.dataset.section);
+          }),
+        );
+        const h = window.location.hash.replace("#", "");
+        show(h && sections[h] ? h : "inicio");
+        window.addEventListener("hashchange", () => {
+          const hh = window.location.hash.replace("#", "");
+          if (hh && sections[hh]) show(hh);
         });
       })();
     </script>

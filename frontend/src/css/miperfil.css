@@ -1,0 +1,441 @@
+/* ============================================================
+   ALSTREAMING - MIPERFIL.CSS
+   Estilo Unificado - Naranja+Verde | Perfil
+   ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --neon-green: #39ff14;
+  --neon-cyan: #00f0ff;
+  --neon-orange: #ff6a00;
+  --fire-orange: #ff8c00;
+  --bg-black: #050508;
+  --bg-card: rgba(13, 13, 20, 0.7);
+  --text-white: #f0f0f5;
+  --text-gray: #8888a0;
+  --text-muted: #6a6a80;
+  --font-main: 'Inter', system-ui, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --transition: 0.3s ease;
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg-black);
+  color: var(--text-white);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Fondo con imagen */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 30% 40%, rgba(255, 140, 0, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(57, 255, 20, 0.04) 0%, transparent 50%);
+  z-index: -1;
+}
+
+/* ============================================================
+   CONTENEDOR PRINCIPAL
+   ============================================================ */
+.perfil-container {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(13, 13, 20, 0.75);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: var(--radius-xl);
+  padding: 35px 30px;
+  border: 1px solid rgba(255, 140, 0, 0.12);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(255, 140, 0, 0.05);
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   HEADER PERFIL
+   ============================================================ */
+.perfil-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.avatar-container {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 16px;
+}
+
+.avatar-img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--fire-orange);
+  box-shadow: 0 0 25px rgba(255, 140, 0, 0.3);
+  background: #0d0d14;
+  transition: var(--transition);
+}
+
+.avatar-upload {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: linear-gradient(135deg, var(--fire-orange), var(--neon-green));
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 2px solid #0d0d14;
+  color: #000;
+  font-size: 0.85rem;
+}
+
+.avatar-upload:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 18px rgba(57, 255, 20, 0.5);
+}
+
+#inputAvatar { display: none; }
+
+.perfil-header h1 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: var(--text-white);
+}
+
+/* Badge rol */
+.rol-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.rol-admin {
+  background: rgba(255, 68, 68, 0.12);
+  color: #ff4444;
+  border: 1px solid rgba(255, 68, 68, 0.25);
+}
+
+.rol-customer {
+  background: rgba(57, 255, 20, 0.08);
+  color: var(--neon-green);
+  border: 1px solid rgba(57, 255, 20, 0.2);
+}
+
+/* ============================================================
+   STATS
+   ============================================================ */
+.stats-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.stat-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 140, 0, 0.08);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.stat-item:hover {
+  border-color: rgba(255, 140, 0, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.stat-valor {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--neon-orange);
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ============================================================
+   FORMULARIO
+   ============================================================ */
+#formPerfil {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.form-group label i {
+  color: var(--neon-orange);
+  width: 16px;
+  text-align: center;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  color: var(--text-white);
+  font-size: 0.85rem;
+  font-family: var(--font-main);
+  transition: var(--transition);
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: var(--neon-orange);
+  box-shadow: 0 0 12px rgba(255, 140, 0, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.form-group input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.form-group input::placeholder {
+  color: rgba(136, 136, 160, 0.3);
+  font-size: 0.78rem;
+}
+
+/* ============================================================
+   BOTÓN GUARDAR
+   ============================================================ */
+.btn-guardar {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--fire-orange), var(--neon-green));
+  color: #000;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-main);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+  box-shadow: 0 4px 18px rgba(255, 140, 0, 0.2);
+}
+
+.btn-guardar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(57, 255, 20, 0.3);
+}
+
+.btn-guardar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-guardar .fa-spinner {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   BOTÓN VOLVER
+   ============================================================ */
+.btn-volver {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+  color: var(--text-gray);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.btn-volver:hover {
+  color: var(--neon-orange);
+}
+
+/* ============================================================
+   NOTIFICACIONES
+   ============================================================ */
+.notificacion {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.82rem;
+  z-index: 9999;
+  animation: slideIn 0.4s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  max-width: 350px;
+}
+
+.notificacion.success {
+  background: rgba(57, 255, 20, 0.15);
+  border: 1px solid rgba(57, 255, 20, 0.3);
+  color: var(--neon-green);
+}
+
+.notificacion.error {
+  background: rgba(255, 68, 68, 0.15);
+  border: 1px solid rgba(255, 68, 68, 0.3);
+  color: #ff4444;
+}
+
+.notificacion.info {
+  background: rgba(255, 140, 0, 0.15);
+  border: 1px solid rgba(255, 140, 0, 0.3);
+  color: var(--neon-orange);
+}
+
+@keyframes slideIn {
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 600px) {
+  body {
+    padding: 15px;
+    align-items: flex-start;
+    padding-top: 30px;
+  }
+
+  .perfil-container {
+    padding: 25px 18px;
+    border-radius: var(--radius-lg);
+  }
+
+  .avatar-container {
+    width: 90px;
+    height: 90px;
+  }
+
+  .avatar-img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .avatar-upload {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+  }
+
+  .perfil-header h1 {
+    font-size: 1.2rem;
+  }
+
+  .stats-info {
+    gap: 8px;
+  }
+
+  .stat-item {
+    padding: 12px;
+  }
+
+  .stat-valor {
+    font-size: 1.3rem;
+  }
+
+  .form-group input {
+    padding: 10px 12px;
+    font-size: 0.82rem;
+  }
+
+  .btn-guardar {
+    padding: 11px;
+    font-size: 0.82rem;
+  }
+
+  .notificacion {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+    font-size: 0.76rem;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .perfil-container {
+    padding: 20px 14px;
+  }
+
+  .avatar-container {
+    width: 75px;
+    height: 75px;
+  }
+
+  .avatar-img {
+    width: 75px;
+    height: 75px;
+  }
+}
